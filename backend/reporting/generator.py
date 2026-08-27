@@ -183,7 +183,7 @@ def generate_reports(
         }
 
     except Exception as e:
-        # Gracefully handle IO issues or parsing errors — return empty dict
+        # Gracefully handle IO issues or parsing errors
         import logging
         logging.getLogger(__name__).error(f"Report generation failed: {e}", exc_info=True)
         return {}
