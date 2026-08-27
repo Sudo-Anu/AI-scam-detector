@@ -48,7 +48,7 @@ ai-scam-detector/
 │   │   ├── reports/            # Generated: pdf/, json/ 
 │   │   └── prompts/            # gemini_prompt.txt 
 │   │ 
-│   └── requirements.txt        # Python dependencies (fastapi, uvicorn, easyocr, etc.) 
+│   └── requirements.txt        # Python dependencies 
 │ 
 ├── .env                        # Environment variables (API Keys, etc.) 
 ├── .gitignore 
