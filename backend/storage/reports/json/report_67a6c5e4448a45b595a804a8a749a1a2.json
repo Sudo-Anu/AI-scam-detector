@@ -1,0 +1,32 @@
+{
+    "report_id": "67a6c5e4448a45b595a804a8a749a1a2",
+    "timestamp": "2026-07-29T19:15:31.769165",
+    "scan_data": {
+        "input": "Your package could not be delivered because of an incorrect address. Update your delivery details here:\n\nYour package will be returned in 24 hours if no action is taken.",
+        "type": "text",
+        "scan_id": "a47146ab-42c2-41a0-8202-8d8104de6343"
+    },
+    "evidence": {
+        "payload_type": "text",
+        "technical_indicators": [],
+        "threat_intelligence": [],
+        "heuristic_matches": []
+    },
+    "evaluation": {
+        "risk_score": 0,
+        "risk_level": "Low Risk",
+        "triggered_rules": []
+    },
+    "ai_explanation": {
+        "summary": "Low risk detected. No immediate threats were identified.",
+        "reasons": [
+            "Input appears normal and lacks typical malicious indicators.",
+            "Domain/file is benign based on current checks."
+        ],
+        "possible_threat": "None",
+        "recommendations": [
+            "Standard safety practices apply.",
+            "Always stay vigilant when interacting with external links or files."
+        ]
+    }
+}

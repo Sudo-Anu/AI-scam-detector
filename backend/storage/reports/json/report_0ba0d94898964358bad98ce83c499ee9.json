@@ -1,0 +1,66 @@
+{
+    "report_id": "0ba0d94898964358bad98ce83c499ee9",
+    "timestamp": "2026-08-27T10:08:40.636672",
+    "scan_data": {
+        "input": "https://mangafire.to",
+        "type": "url",
+        "scan_id": "b6bd8d8c-470e-403a-bc57-52b0265355ad"
+    },
+    "evidence": {
+        "payload_type": "url",
+        "technical_indicators": [
+            {
+                "name": "ssl_valid",
+                "value": true,
+                "description": "SSL/TLS certificate validity status.",
+                "severity": "low"
+            },
+            {
+                "name": "domain_age_days",
+                "value": 694,
+                "description": "Age of the registered domain: 694 day(s).",
+                "severity": "low"
+            },
+            {
+                "name": "registrar",
+                "value": "Government of Kingdom of Tonga",
+                "description": "Domain registrar: Government of Kingdom of Tonga.",
+                "severity": "low"
+            }
+        ],
+        "threat_intelligence": [
+            {
+                "name": "virustotal_positives",
+                "value": 0,
+                "description": "VirusTotal engine detections: 0.",
+                "severity": "low"
+            },
+            {
+                "name": "gsb_unsafe",
+                "value": false,
+                "description": "Not flagged by Google Safe Browsing.",
+                "severity": "low"
+            }
+        ],
+        "heuristic_matches": []
+    },
+    "evaluation": {
+        "risk_score": 5,
+        "risk_level": "Low Risk",
+        "triggered_rules": [
+            "Baseline: Inherent internet risk (+5)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "Low risk detected. No immediate threats were identified.",
+        "reasons": [
+            "Input appears normal and lacks typical malicious indicators.",
+            "Domain/file is benign based on current checks."
+        ],
+        "possible_threat": "None",
+        "recommendations": [
+            "Standard safety practices apply.",
+            "Always stay vigilant when interacting with external links or files."
+        ]
+    }
+}

@@ -1,0 +1,64 @@
+{
+    "report_id": "5377c0dc9ae148f9b517a4b6035046c7",
+    "timestamp": "2026-07-30T13:19:48.188184",
+    "scan_data": {
+        "input": "https://shorturl.fm/5hTuF",
+        "type": "url",
+        "scan_id": "2103f40f-9dfe-412b-b477-9a023163f52b"
+    },
+    "evidence": {
+        "payload_type": "url",
+        "technical_indicators": [
+            {
+                "name": "ssl_valid",
+                "value": true,
+                "description": "SSL/TLS certificate validity status.",
+                "severity": "low"
+            },
+            {
+                "name": "domain_age_days",
+                "value": 446,
+                "description": "Age of the registered domain: 446 day(s).",
+                "severity": "low"
+            },
+            {
+                "name": "registrar",
+                "value": "NameCheap, Inc.",
+                "description": "Domain registrar: NameCheap, Inc..",
+                "severity": "low"
+            }
+        ],
+        "threat_intelligence": [
+            {
+                "name": "virustotal_positives",
+                "value": 0,
+                "description": "VirusTotal engine detections: 0.",
+                "severity": "low"
+            },
+            {
+                "name": "gsb_unsafe",
+                "value": false,
+                "description": "Not flagged by Google Safe Browsing.",
+                "severity": "low"
+            }
+        ],
+        "heuristic_matches": []
+    },
+    "evaluation": {
+        "risk_score": 0,
+        "risk_level": "Low Risk",
+        "triggered_rules": []
+    },
+    "ai_explanation": {
+        "summary": "Low risk detected. No immediate threats were identified.",
+        "reasons": [
+            "Input appears normal and lacks typical malicious indicators.",
+            "Domain/file is benign based on current checks."
+        ],
+        "possible_threat": "None",
+        "recommendations": [
+            "Standard safety practices apply.",
+            "Always stay vigilant when interacting with external links or files."
+        ]
+    }
+}

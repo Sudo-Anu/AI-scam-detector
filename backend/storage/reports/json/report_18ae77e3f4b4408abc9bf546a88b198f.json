@@ -1,0 +1,83 @@
+{
+    "report_id": "18ae77e3f4b4408abc9bf546a88b198f",
+    "timestamp": "2026-07-30T13:17:04.763895",
+    "scan_data": {
+        "input": "http://paypal-support-verify.xyz/login-update",
+        "type": "url",
+        "scan_id": "a42ccd44-b2c4-4352-9a73-e980c8504f58"
+    },
+    "evidence": {
+        "payload_type": "url",
+        "technical_indicators": [
+            {
+                "name": "ssl_valid",
+                "value": false,
+                "description": "SSL/TLS certificate validity status.",
+                "severity": "high"
+            },
+            {
+                "name": "domain_age_days",
+                "value": 0,
+                "description": "Age of the registered domain: 0 day(s).",
+                "severity": "high"
+            }
+        ],
+        "threat_intelligence": [
+            {
+                "name": "virustotal_positives",
+                "value": 0,
+                "description": "VirusTotal engine detections: 0.",
+                "severity": "low"
+            },
+            {
+                "name": "gsb_unsafe",
+                "value": false,
+                "description": "Not flagged by Google Safe Browsing.",
+                "severity": "low"
+            }
+        ],
+        "heuristic_matches": [
+            {
+                "name": "suspicious_tld",
+                "value": true,
+                "description": "Domain uses a suspicious/high-risk TLD.",
+                "severity": "medium"
+            },
+            {
+                "name": "url_keyword_detections",
+                "value": [
+                    "paypal",
+                    "support-verify",
+                    "login-update",
+                    "update",
+                    "verify"
+                ],
+                "description": "5 brand impersonation keyword(s) found in URL.",
+                "severity": "high"
+            }
+        ]
+    },
+    "evaluation": {
+        "risk_score": 70,
+        "risk_level": "High Risk",
+        "triggered_rules": [
+            "Technical: Invalid SSL/TLS certificate (+15)",
+            "Technical: Domain registered within last 30 days (0 day(s)) (+20)",
+            "Heuristic: 5 impersonation keyword(s) in URL (+20)",
+            "Heuristic: Suspicious/high-risk TLD detected (+15)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "High risk detected. The provided input matches known malicious patterns.",
+        "reasons": [
+            "Multiple heuristic flags triggered.",
+            "Matches signatures of known threats or blocklists."
+        ],
+        "possible_threat": "Phishing or Malware",
+        "recommendations": [
+            "Do not interact with the link or file.",
+            "Run a full system antivirus scan.",
+            "Delete or quarantine the source material immediately."
+        ]
+    }
+}

@@ -1,0 +1,62 @@
+{
+    "report_id": "e8a2d07a423847899c760bf4dd8fbfa5",
+    "timestamp": "2026-07-30T15:49:32.218962",
+    "scan_data": {
+        "input": "https://eaokvbwrot3i7qoi446gfbka.onion",
+        "type": "url",
+        "scan_id": "29d4cbc7-5914-4295-aeda-4b7b1a9b30b7"
+    },
+    "evidence": {
+        "payload_type": "url",
+        "technical_indicators": [
+            {
+                "name": "ssl_valid",
+                "value": false,
+                "description": "SSL/TLS certificate validity status.",
+                "severity": "high"
+            },
+            {
+                "name": "domain_age_days",
+                "value": 0,
+                "description": "Age of the registered domain: 0 day(s).",
+                "severity": "high"
+            }
+        ],
+        "threat_intelligence": [
+            {
+                "name": "virustotal_positives",
+                "value": 0,
+                "description": "VirusTotal engine detections: 0.",
+                "severity": "low"
+            },
+            {
+                "name": "gsb_unsafe",
+                "value": false,
+                "description": "Not flagged by Google Safe Browsing.",
+                "severity": "low"
+            }
+        ],
+        "heuristic_matches": []
+    },
+    "evaluation": {
+        "risk_score": 45,
+        "risk_level": "Medium Risk",
+        "triggered_rules": [
+            "Technical: Invalid SSL/TLS certificate (+20)",
+            "Technical: Domain registered within last 30 days (0 day(s)) (+25)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "Medium risk detected. The input exhibits some suspicious characteristics.",
+        "reasons": [
+            "Suspicious metadata or uncommon indicators found.",
+            "Unable to fully verify the origin or reputation."
+        ],
+        "possible_threat": "Suspicious Activity / Potential Spam",
+        "recommendations": [
+            "Proceed with caution.",
+            "Verify the sender or source through a secondary channel before continuing.",
+            "Do not provide sensitive personal information."
+        ]
+    }
+}

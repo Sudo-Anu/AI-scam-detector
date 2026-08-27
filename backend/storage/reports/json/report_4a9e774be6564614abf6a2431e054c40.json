@@ -1,0 +1,32 @@
+{
+    "report_id": "4a9e774be6564614abf6a2431e054c40",
+    "timestamp": "2026-07-29T19:06:05.705596",
+    "scan_data": {
+        "input": "whatever it is",
+        "type": "text",
+        "scan_id": "eeedf3d6-d12f-4239-8b7d-333e839e5e1d"
+    },
+    "evidence": {
+        "payload_type": "text",
+        "technical_indicators": [],
+        "threat_intelligence": [],
+        "heuristic_matches": []
+    },
+    "evaluation": {
+        "risk_score": 0,
+        "risk_level": "Low Risk",
+        "triggered_rules": []
+    },
+    "ai_explanation": {
+        "summary": "Low risk detected. No immediate threats were identified.",
+        "reasons": [
+            "Input appears normal and lacks typical malicious indicators.",
+            "Domain/file is benign based on current checks."
+        ],
+        "possible_threat": "None",
+        "recommendations": [
+            "Standard safety practices apply.",
+            "Always stay vigilant when interacting with external links or files."
+        ]
+    }
+}

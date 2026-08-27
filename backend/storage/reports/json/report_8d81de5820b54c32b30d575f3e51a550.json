@@ -1,0 +1,75 @@
+{
+    "report_id": "8d81de5820b54c32b30d575f3e51a550",
+    "timestamp": "2026-07-30T13:26:47.507216",
+    "scan_data": {
+        "input": "https://google.com",
+        "type": "url",
+        "scan_id": "a40666f6-9543-4d41-85be-6c996dc54cb0"
+    },
+    "evidence": {
+        "payload_type": "url",
+        "technical_indicators": [
+            {
+                "name": "ssl_valid",
+                "value": true,
+                "description": "SSL/TLS certificate validity status.",
+                "severity": "low"
+            },
+            {
+                "name": "domain_age_days",
+                "value": 10545,
+                "description": "Age of the registered domain: 10545 day(s).",
+                "severity": "low"
+            },
+            {
+                "name": "registrar",
+                "value": "MarkMonitor, Inc.",
+                "description": "Domain registrar: MarkMonitor, Inc..",
+                "severity": "low"
+            }
+        ],
+        "threat_intelligence": [
+            {
+                "name": "virustotal_positives",
+                "value": 0,
+                "description": "VirusTotal engine detections: 0.",
+                "severity": "low"
+            },
+            {
+                "name": "gsb_unsafe",
+                "value": false,
+                "description": "Not flagged by Google Safe Browsing.",
+                "severity": "low"
+            }
+        ],
+        "heuristic_matches": [
+            {
+                "name": "url_keyword_detections",
+                "value": [
+                    "google"
+                ],
+                "description": "1 brand impersonation keyword(s) found in URL.",
+                "severity": "medium"
+            }
+        ]
+    },
+    "evaluation": {
+        "risk_score": 5,
+        "risk_level": "Low Risk",
+        "triggered_rules": [
+            "Heuristic: 1 impersonation keyword(s) in URL (+5)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "Low risk detected. No immediate threats were identified.",
+        "reasons": [
+            "Input appears normal and lacks typical malicious indicators.",
+            "Domain/file is benign based on current checks."
+        ],
+        "possible_threat": "None",
+        "recommendations": [
+            "Standard safety practices apply.",
+            "Always stay vigilant when interacting with external links or files."
+        ]
+    }
+}

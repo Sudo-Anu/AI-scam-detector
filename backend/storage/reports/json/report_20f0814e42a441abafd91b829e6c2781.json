@@ -1,0 +1,74 @@
+{
+    "report_id": "20f0814e42a441abafd91b829e6c2781",
+    "timestamp": "2026-07-30T13:33:26.596066",
+    "scan_data": {
+        "input": "https://paypal-login-secure-account.example/login",
+        "type": "url",
+        "scan_id": "5ca0e844-ff5a-4252-aff2-34723d0190ba"
+    },
+    "evidence": {
+        "payload_type": "url",
+        "technical_indicators": [
+            {
+                "name": "ssl_valid",
+                "value": false,
+                "description": "SSL/TLS certificate validity status.",
+                "severity": "high"
+            },
+            {
+                "name": "domain_age_days",
+                "value": 0,
+                "description": "Age of the registered domain: 0 day(s).",
+                "severity": "high"
+            }
+        ],
+        "threat_intelligence": [
+            {
+                "name": "virustotal_positives",
+                "value": 0,
+                "description": "VirusTotal engine detections: 0.",
+                "severity": "low"
+            },
+            {
+                "name": "gsb_unsafe",
+                "value": false,
+                "description": "Not flagged by Google Safe Browsing.",
+                "severity": "low"
+            }
+        ],
+        "heuristic_matches": [
+            {
+                "name": "url_keyword_detections",
+                "value": [
+                    "paypal",
+                    "secure",
+                    "account"
+                ],
+                "description": "3 brand impersonation keyword(s) found in URL.",
+                "severity": "high"
+            }
+        ]
+    },
+    "evaluation": {
+        "risk_score": 85,
+        "risk_level": "High Risk",
+        "triggered_rules": [
+            "Technical: Invalid SSL/TLS certificate (+20)",
+            "Technical: Domain registered within last 30 days (0 day(s)) (+25)",
+            "Heuristic: 3 impersonation keyword(s) in URL (+40)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "High risk detected. The provided input matches known malicious patterns.",
+        "reasons": [
+            "Multiple heuristic flags triggered.",
+            "Matches signatures of known threats or blocklists."
+        ],
+        "possible_threat": "Phishing or Malware",
+        "recommendations": [
+            "Do not interact with the link or file.",
+            "Run a full system antivirus scan.",
+            "Delete or quarantine the source material immediately."
+        ]
+    }
+}

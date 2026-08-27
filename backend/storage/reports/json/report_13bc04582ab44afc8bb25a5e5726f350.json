@@ -1,0 +1,75 @@
+{
+    "report_id": "13bc04582ab44afc8bb25a5e5726f350",
+    "timestamp": "2026-07-30T13:26:59.129620",
+    "scan_data": {
+        "input": "https://bit.ly/abc123",
+        "type": "url",
+        "scan_id": "30a4fe2b-b193-4250-88a1-c4c7e674d07d"
+    },
+    "evidence": {
+        "payload_type": "url",
+        "technical_indicators": [
+            {
+                "name": "ssl_valid",
+                "value": false,
+                "description": "SSL/TLS certificate validity status.",
+                "severity": "high"
+            },
+            {
+                "name": "domain_age_days",
+                "value": 6647,
+                "description": "Age of the registered domain: 6647 day(s).",
+                "severity": "low"
+            },
+            {
+                "name": "registrar",
+                "value": "Libyan Spider Network (int)",
+                "description": "Domain registrar: Libyan Spider Network (int).",
+                "severity": "low"
+            }
+        ],
+        "threat_intelligence": [
+            {
+                "name": "virustotal_positives",
+                "value": 0,
+                "description": "VirusTotal engine detections: 0.",
+                "severity": "low"
+            },
+            {
+                "name": "gsb_unsafe",
+                "value": false,
+                "description": "Not flagged by Google Safe Browsing.",
+                "severity": "low"
+            }
+        ],
+        "heuristic_matches": [
+            {
+                "name": "is_tracker_or_shortener",
+                "value": true,
+                "description": "URL uses a known link shortener or IP tracking service.",
+                "severity": "high"
+            }
+        ]
+    },
+    "evaluation": {
+        "risk_score": 50,
+        "risk_level": "Medium Risk",
+        "triggered_rules": [
+            "Technical: Invalid SSL/TLS certificate (+15)",
+            "Heuristic: URL uses a known link shortener or IP tracker (+35)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "Medium risk detected. The input exhibits some suspicious characteristics.",
+        "reasons": [
+            "Suspicious metadata or uncommon indicators found.",
+            "Unable to fully verify the origin or reputation."
+        ],
+        "possible_threat": "Suspicious Activity / Potential Spam",
+        "recommendations": [
+            "Proceed with caution.",
+            "Verify the sender or source through a secondary channel before continuing.",
+            "Do not provide sensitive personal information."
+        ]
+    }
+}

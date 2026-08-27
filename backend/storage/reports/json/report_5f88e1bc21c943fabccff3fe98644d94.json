@@ -1,0 +1,54 @@
+{
+    "report_id": "5f88e1bc21c943fabccff3fe98644d94",
+    "timestamp": "2026-07-29T19:15:59.268258",
+    "scan_data": {
+        "input": "Security Alert: We detected unusual activity on your account.\n\nTo prevent temporary suspension, verify your identity using the OTP below.\n\nOTP: 482731\n\nEnter your OTP here:\nhttps://secure-account-verify.example\n\n\u26a0\ufe0f Do not share this code with anyone. This code expires in 5 minutes.",
+        "type": "text",
+        "scan_id": "a527c439-1f82-40a3-b8a5-8fba3a72561c"
+    },
+    "evidence": {
+        "payload_type": "text",
+        "technical_indicators": [
+            {
+                "name": "spam_keyword_count",
+                "value": 4,
+                "description": "4 suspicious keyword(s) detected in text.",
+                "severity": "medium"
+            }
+        ],
+        "threat_intelligence": [],
+        "heuristic_matches": [
+            {
+                "name": "payment_triggers",
+                "value": [
+                    "unusual activity",
+                    "account",
+                    "security alert",
+                    "verify"
+                ],
+                "description": "Financial scam keywords detected (4 match(es)). Indicative of financial fraud or advance-fee scams.",
+                "severity": "high"
+            }
+        ]
+    },
+    "evaluation": {
+        "risk_score": 28,
+        "risk_level": "Low Risk",
+        "triggered_rules": [
+            "Heuristic: Payment/financial keywords detected (+20)",
+            "Heuristic: 4 spam keyword(s) in text (+8)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "Low risk detected. No immediate threats were identified.",
+        "reasons": [
+            "Input appears normal and lacks typical malicious indicators.",
+            "Domain/file is benign based on current checks."
+        ],
+        "possible_threat": "None",
+        "recommendations": [
+            "Standard safety practices apply.",
+            "Always stay vigilant when interacting with external links or files."
+        ]
+    }
+}

@@ -1,0 +1,65 @@
+{
+    "report_id": "d84dc92e2e394d8594f95235ae03473f",
+    "timestamp": "2026-07-30T14:40:18.596462",
+    "scan_data": {
+        "input": "backend\\storage\\uploads\\images\\53b52450-7403-4938-8107-99e64f8dd9b0_Screenshot 2026-07-30 144002.png",
+        "type": "image",
+        "scan_id": "53b52450-7403-4938-8107-99e64f8dd9b0"
+    },
+    "evidence": {
+        "payload_type": "image",
+        "technical_indicators": [
+            {
+                "name": "image_format",
+                "value": "PNG",
+                "description": "Detected image file format: PNG.",
+                "severity": "low"
+            },
+            {
+                "name": "ocr_text",
+                "value": "your bank account has been locked your kyc has expired . verify immediately to avoid account suspension . https:/ /secure bank-update.example call: +91 98765 43210",
+                "description": "Text extracted from the image via OCR (truncated to 500 chars).",
+                "severity": "low"
+            }
+        ],
+        "threat_intelligence": [],
+        "heuristic_matches": [
+            {
+                "name": "ocr_keyword_matches",
+                "value": [
+                    "verify",
+                    "account"
+                ],
+                "description": "2 suspicious keyword(s) detected in OCR-extracted text.",
+                "severity": "medium"
+            },
+            {
+                "name": "suspicious_image_flag",
+                "value": true,
+                "description": "Image classified as suspicious: Account Exploit.",
+                "severity": "high"
+            }
+        ]
+    },
+    "evaluation": {
+        "risk_score": 65,
+        "risk_level": "High Risk",
+        "triggered_rules": [
+            "Heuristic: 2 suspicious keyword(s) in image (+30)",
+            "Heuristic: Suspicious image content detected (+35)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "High risk detected. The provided input matches known malicious patterns.",
+        "reasons": [
+            "Multiple heuristic flags triggered.",
+            "Matches signatures of known threats or blocklists."
+        ],
+        "possible_threat": "Phishing or Malware",
+        "recommendations": [
+            "Do not interact with the link or file.",
+            "Run a full system antivirus scan.",
+            "Delete or quarantine the source material immediately."
+        ]
+    }
+}

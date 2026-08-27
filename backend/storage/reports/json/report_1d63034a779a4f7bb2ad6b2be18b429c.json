@@ -1,0 +1,45 @@
+{
+    "report_id": "1d63034a779a4f7bb2ad6b2be18b429c",
+    "timestamp": "2026-07-30T13:36:27.172054",
+    "scan_data": {
+        "input": "backend\\storage\\uploads\\images\\9b98b5ff-a68e-44fe-ac35-41ed2b73fa19_WhatsApp Image 2026-06-26 at 11.54.36 AM.jpeg",
+        "type": "image",
+        "scan_id": "9b98b5ff-a68e-44fe-ac35-41ed2b73fa19"
+    },
+    "evidence": {
+        "payload_type": "image",
+        "technical_indicators": [
+            {
+                "name": "image_format",
+                "value": "JPEG",
+                "description": "Detected image file format: JPEG.",
+                "severity": "low"
+            },
+            {
+                "name": "ocr_text",
+                "value": "hra 87 g0 nment ollndin 0 472r7 sujal nieshred deulater 1 77 ata/0o8: 05/03/2008 5v male 3 1 8377 9423 4903 md 9189 +92 0328 4907 atst 3tut_ att 3rasr",
+                "description": "Text extracted from the image via OCR (truncated to 500 chars).",
+                "severity": "low"
+            }
+        ],
+        "threat_intelligence": [],
+        "heuristic_matches": []
+    },
+    "evaluation": {
+        "risk_score": 0,
+        "risk_level": "Low Risk",
+        "triggered_rules": []
+    },
+    "ai_explanation": {
+        "summary": "Low risk detected. No immediate threats were identified.",
+        "reasons": [
+            "Input appears normal and lacks typical malicious indicators.",
+            "Domain/file is benign based on current checks."
+        ],
+        "possible_threat": "None",
+        "recommendations": [
+            "Standard safety practices apply.",
+            "Always stay vigilant when interacting with external links or files."
+        ]
+    }
+}

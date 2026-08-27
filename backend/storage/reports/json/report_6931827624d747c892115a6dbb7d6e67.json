@@ -1,0 +1,94 @@
+{
+    "report_id": "6931827624d747c892115a6dbb7d6e67",
+    "timestamp": "2026-08-27T10:08:59.831137",
+    "scan_data": {
+        "input": "http://grabify.link.xyz/netflix/verify-account",
+        "type": "url",
+        "scan_id": "61b6e0bd-f831-4dc8-bd06-ff2e8510ae38"
+    },
+    "evidence": {
+        "payload_type": "url",
+        "technical_indicators": [
+            {
+                "name": "ssl_valid",
+                "value": false,
+                "description": "SSL/TLS certificate validity status.",
+                "severity": "high"
+            },
+            {
+                "name": "domain_age_days",
+                "value": 2162,
+                "description": "Age of the registered domain: 2162 day(s).",
+                "severity": "low"
+            },
+            {
+                "name": "registrar",
+                "value": "NAMECHEAP INC",
+                "description": "Domain registrar: NAMECHEAP INC.",
+                "severity": "low"
+            }
+        ],
+        "threat_intelligence": [
+            {
+                "name": "virustotal_positives",
+                "value": 0,
+                "description": "VirusTotal engine detections: 0.",
+                "severity": "low"
+            },
+            {
+                "name": "gsb_unsafe",
+                "value": false,
+                "description": "Not flagged by Google Safe Browsing.",
+                "severity": "low"
+            }
+        ],
+        "heuristic_matches": [
+            {
+                "name": "suspicious_tld",
+                "value": true,
+                "description": "Domain uses a suspicious/high-risk TLD.",
+                "severity": "medium"
+            },
+            {
+                "name": "url_keyword_detections",
+                "value": [
+                    "netflix",
+                    "account",
+                    "verify"
+                ],
+                "description": "3 brand impersonation keyword(s) found in URL.",
+                "severity": "high"
+            },
+            {
+                "name": "is_tracker_or_shortener",
+                "value": true,
+                "description": "URL uses a known link shortener or IP tracking service.",
+                "severity": "high"
+            }
+        ]
+    },
+    "evaluation": {
+        "risk_score": 100,
+        "risk_level": "High Risk",
+        "triggered_rules": [
+            "Baseline: Inherent internet risk (+5)",
+            "Technical: Invalid SSL/TLS certificate (+20)",
+            "Heuristic: 3 impersonation keyword(s) in URL (+40)",
+            "Heuristic: Suspicious/high-risk TLD detected (+25)",
+            "Heuristic: URL uses a known link shortener or IP tracker (+40)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "High risk detected. The provided input matches known malicious patterns.",
+        "reasons": [
+            "Multiple heuristic flags triggered.",
+            "Matches signatures of known threats or blocklists."
+        ],
+        "possible_threat": "Phishing or Malware",
+        "recommendations": [
+            "Do not interact with the link or file.",
+            "Run a full system antivirus scan.",
+            "Delete or quarantine the source material immediately."
+        ]
+    }
+}

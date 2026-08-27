@@ -1,0 +1,53 @@
+{
+    "report_id": "0fe927586e714870b0274c412041f884",
+    "timestamp": "2026-07-30T15:51:18.467611",
+    "scan_data": {
+        "input": "\u26a0\ufe0f YOUR BANK ACCOUNT HAS BEEN LOCKED\n\nYour KYC has expired.\nVerify immediately to avoid account suspension.\n\nhttps://secure-bank-update.example\n\nCall: +91 98765 43210",
+        "type": "text",
+        "scan_id": "9d360291-3c6c-4d89-a75f-dd93286335bc"
+    },
+    "evidence": {
+        "payload_type": "text",
+        "technical_indicators": [
+            {
+                "name": "spam_keyword_count",
+                "value": 2,
+                "description": "2 suspicious keyword(s) detected in text.",
+                "severity": "low"
+            }
+        ],
+        "threat_intelligence": [],
+        "heuristic_matches": [
+            {
+                "name": "payment_triggers",
+                "value": [
+                    "verify",
+                    "account"
+                ],
+                "description": "Financial scam keywords detected (2 match(es)). Indicative of financial fraud or advance-fee scams.",
+                "severity": "medium"
+            }
+        ]
+    },
+    "evaluation": {
+        "risk_score": 50,
+        "risk_level": "Medium Risk",
+        "triggered_rules": [
+            "Heuristic: Payment/financial keywords detected (+30)",
+            "Heuristic: 2 spam keyword(s) in text (+20)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "Medium risk detected. The input exhibits some suspicious characteristics.",
+        "reasons": [
+            "Suspicious metadata or uncommon indicators found.",
+            "Unable to fully verify the origin or reputation."
+        ],
+        "possible_threat": "Suspicious Activity / Potential Spam",
+        "recommendations": [
+            "Proceed with caution.",
+            "Verify the sender or source through a secondary channel before continuing.",
+            "Do not provide sensitive personal information."
+        ]
+    }
+}

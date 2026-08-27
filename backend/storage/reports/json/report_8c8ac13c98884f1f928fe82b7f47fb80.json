@@ -1,0 +1,49 @@
+{
+    "report_id": "8c8ac13c98884f1f928fe82b7f47fb80",
+    "timestamp": "2026-07-30T13:05:49.336245",
+    "scan_data": {
+        "input": "URGENT! Send me money now!",
+        "type": "text",
+        "scan_id": "8031e1c4-f3a9-4343-986b-9c578eb277d4"
+    },
+    "evidence": {
+        "payload_type": "text",
+        "technical_indicators": [
+            {
+                "name": "spam_keyword_count",
+                "value": 1,
+                "description": "1 suspicious keyword(s) detected in text.",
+                "severity": "low"
+            }
+        ],
+        "threat_intelligence": [],
+        "heuristic_matches": [
+            {
+                "name": "urgency_flags",
+                "value": 1,
+                "description": "Urgency/pressure language detected (score: 1). Creates artificial time pressure to override critical thinking.",
+                "severity": "medium"
+            }
+        ]
+    },
+    "evaluation": {
+        "risk_score": 10,
+        "risk_level": "Low Risk",
+        "triggered_rules": [
+            "Heuristic: Urgency/pressure language detected (+8)",
+            "Heuristic: 1 spam keyword(s) in text (+2)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "Low risk detected. No immediate threats were identified.",
+        "reasons": [
+            "Input appears normal and lacks typical malicious indicators.",
+            "Domain/file is benign based on current checks."
+        ],
+        "possible_threat": "None",
+        "recommendations": [
+            "Standard safety practices apply.",
+            "Always stay vigilant when interacting with external links or files."
+        ]
+    }
+}

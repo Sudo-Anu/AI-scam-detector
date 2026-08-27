@@ -1,0 +1,62 @@
+{
+    "report_id": "b0732a3efb054719af1c02d5f80e8ac6",
+    "timestamp": "2026-07-29T19:13:43.765352",
+    "scan_data": {
+        "input": "https://xn--pple-43d.com",
+        "type": "url",
+        "scan_id": "2ad91c69-4cb6-49a8-af6a-6204ac03a4aa"
+    },
+    "evidence": {
+        "payload_type": "url",
+        "technical_indicators": [
+            {
+                "name": "ssl_valid",
+                "value": false,
+                "description": "SSL/TLS certificate validity status.",
+                "severity": "high"
+            },
+            {
+                "name": "domain_age_days",
+                "value": 0,
+                "description": "Age of the registered domain: 0 day(s).",
+                "severity": "high"
+            }
+        ],
+        "threat_intelligence": [
+            {
+                "name": "virustotal_positives",
+                "value": 0,
+                "description": "VirusTotal engine detections: 0.",
+                "severity": "low"
+            },
+            {
+                "name": "gsb_unsafe",
+                "value": false,
+                "description": "Not flagged by Google Safe Browsing.",
+                "severity": "low"
+            }
+        ],
+        "heuristic_matches": []
+    },
+    "evaluation": {
+        "risk_score": 35,
+        "risk_level": "Medium Risk",
+        "triggered_rules": [
+            "Technical: Invalid SSL/TLS certificate (+15)",
+            "Technical: Domain registered within last 30 days (0 day(s)) (+20)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "Medium risk detected. The input exhibits some suspicious characteristics.",
+        "reasons": [
+            "Suspicious metadata or uncommon indicators found.",
+            "Unable to fully verify the origin or reputation."
+        ],
+        "possible_threat": "Suspicious Activity / Potential Spam",
+        "recommendations": [
+            "Proceed with caution.",
+            "Verify the sender or source through a secondary channel before continuing.",
+            "Do not provide sensitive personal information."
+        ]
+    }
+}

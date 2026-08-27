@@ -1,0 +1,72 @@
+{
+    "report_id": "745ce89932314310b2f1dd126a700922",
+    "timestamp": "2026-07-29T18:45:19.211098",
+    "scan_data": {
+        "input": "URGENT: Your account is suspended! Send Bitcoin to 1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2 or lose all funds within 24 hours!",
+        "type": "text",
+        "scan_id": "54a187d8-035f-433a-b64b-4f7c1523bc87"
+    },
+    "evidence": {
+        "payload_type": "text",
+        "technical_indicators": [
+            {
+                "name": "spam_keyword_count",
+                "value": 4,
+                "description": "4 suspicious keyword(s) detected in text.",
+                "severity": "medium"
+            }
+        ],
+        "threat_intelligence": [
+            {
+                "name": "crypto_wallet_matches",
+                "value": [
+                    "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2"
+                ],
+                "description": "1 cryptocurrency wallet address(es) found \u2014 a strong indicator of investment or advance-fee scams.",
+                "severity": "high"
+            }
+        ],
+        "heuristic_matches": [
+            {
+                "name": "urgency_flags",
+                "value": 2,
+                "description": "Urgency/pressure language detected (score: 2). Creates artificial time pressure to override critical thinking.",
+                "severity": "medium"
+            },
+            {
+                "name": "payment_triggers",
+                "value": [
+                    "account",
+                    "within 24 hours",
+                    "suspended",
+                    "urgent"
+                ],
+                "description": "Financial scam keywords detected (4 match(es)). Indicative of financial fraud or advance-fee scams.",
+                "severity": "high"
+            }
+        ]
+    },
+    "evaluation": {
+        "risk_score": 74,
+        "risk_level": "High Risk",
+        "triggered_rules": [
+            "Threat Intel: Cryptocurrency wallet address(es) found (+30)",
+            "Heuristic: Urgency/pressure language detected (+16)",
+            "Heuristic: Payment/financial keywords detected (+20)",
+            "Heuristic: 4 spam keyword(s) in text (+8)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "High risk detected. The provided input matches known malicious patterns.",
+        "reasons": [
+            "Multiple heuristic flags triggered.",
+            "Matches signatures of known threats or blocklists."
+        ],
+        "possible_threat": "Phishing or Malware",
+        "recommendations": [
+            "Do not interact with the link or file.",
+            "Run a full system antivirus scan.",
+            "Delete or quarantine the source material immediately."
+        ]
+    }
+}

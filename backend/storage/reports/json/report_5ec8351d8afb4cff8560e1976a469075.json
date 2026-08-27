@@ -1,0 +1,64 @@
+{
+    "report_id": "5ec8351d8afb4cff8560e1976a469075",
+    "timestamp": "2026-08-27T10:06:06.632622",
+    "scan_data": {
+        "input": "https://kagane.org",
+        "type": "url",
+        "scan_id": "3a5f322a-209d-4b11-9b2d-056d4ee5df5c"
+    },
+    "evidence": {
+        "payload_type": "url",
+        "technical_indicators": [
+            {
+                "name": "ssl_valid",
+                "value": true,
+                "description": "SSL/TLS certificate validity status.",
+                "severity": "low"
+            },
+            {
+                "name": "domain_age_days",
+                "value": 377,
+                "description": "Age of the registered domain: 377 day(s).",
+                "severity": "low"
+            },
+            {
+                "name": "registrar",
+                "value": "TUCOWS.COM, CO.",
+                "description": "Domain registrar: TUCOWS.COM, CO..",
+                "severity": "low"
+            }
+        ],
+        "threat_intelligence": [
+            {
+                "name": "virustotal_positives",
+                "value": 0,
+                "description": "VirusTotal engine detections: 0.",
+                "severity": "low"
+            },
+            {
+                "name": "gsb_unsafe",
+                "value": false,
+                "description": "Not flagged by Google Safe Browsing.",
+                "severity": "low"
+            }
+        ],
+        "heuristic_matches": []
+    },
+    "evaluation": {
+        "risk_score": 0,
+        "risk_level": "Low Risk",
+        "triggered_rules": []
+    },
+    "ai_explanation": {
+        "summary": "Low risk detected. No immediate threats were identified.",
+        "reasons": [
+            "Input appears normal and lacks typical malicious indicators.",
+            "Domain/file is benign based on current checks."
+        ],
+        "possible_threat": "None",
+        "recommendations": [
+            "Standard safety practices apply.",
+            "Always stay vigilant when interacting with external links or files."
+        ]
+    }
+}

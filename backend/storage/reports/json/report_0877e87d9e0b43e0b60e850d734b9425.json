@@ -1,0 +1,32 @@
+{
+    "report_id": "0877e87d9e0b43e0b60e850d734b9425",
+    "timestamp": "2026-08-25T14:10:50.010737",
+    "scan_data": {
+        "input": "hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii congo",
+        "type": "text",
+        "scan_id": "01534128-a419-4c2a-8ea0-641bba892f18"
+    },
+    "evidence": {
+        "payload_type": "text",
+        "technical_indicators": [],
+        "threat_intelligence": [],
+        "heuristic_matches": []
+    },
+    "evaluation": {
+        "risk_score": 0,
+        "risk_level": "Low Risk",
+        "triggered_rules": []
+    },
+    "ai_explanation": {
+        "summary": "Low risk detected. No immediate threats were identified.",
+        "reasons": [
+            "Input appears normal and lacks typical malicious indicators.",
+            "Domain/file is benign based on current checks."
+        ],
+        "possible_threat": "None",
+        "recommendations": [
+            "Standard safety practices apply.",
+            "Always stay vigilant when interacting with external links or files."
+        ]
+    }
+}

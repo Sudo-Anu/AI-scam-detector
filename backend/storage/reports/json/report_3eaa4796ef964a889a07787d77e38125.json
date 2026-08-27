@@ -1,0 +1,73 @@
+{
+    "report_id": "3eaa4796ef964a889a07787d77e38125",
+    "timestamp": "2026-07-30T13:25:15.926678",
+    "scan_data": {
+        "input": "https://microsoft-support-security-update.example",
+        "type": "url",
+        "scan_id": "d1867fc1-8147-48a1-bd79-4105972e1dbb"
+    },
+    "evidence": {
+        "payload_type": "url",
+        "technical_indicators": [
+            {
+                "name": "ssl_valid",
+                "value": false,
+                "description": "SSL/TLS certificate validity status.",
+                "severity": "high"
+            },
+            {
+                "name": "domain_age_days",
+                "value": 0,
+                "description": "Age of the registered domain: 0 day(s).",
+                "severity": "high"
+            }
+        ],
+        "threat_intelligence": [
+            {
+                "name": "virustotal_positives",
+                "value": 0,
+                "description": "VirusTotal engine detections: 0.",
+                "severity": "low"
+            },
+            {
+                "name": "gsb_unsafe",
+                "value": false,
+                "description": "Not flagged by Google Safe Browsing.",
+                "severity": "low"
+            }
+        ],
+        "heuristic_matches": [
+            {
+                "name": "url_keyword_detections",
+                "value": [
+                    "microsoft",
+                    "update"
+                ],
+                "description": "2 brand impersonation keyword(s) found in URL.",
+                "severity": "medium"
+            }
+        ]
+    },
+    "evaluation": {
+        "risk_score": 45,
+        "risk_level": "Medium Risk",
+        "triggered_rules": [
+            "Technical: Invalid SSL/TLS certificate (+15)",
+            "Technical: Domain registered within last 30 days (0 day(s)) (+20)",
+            "Heuristic: 2 impersonation keyword(s) in URL (+10)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "Medium risk detected. The input exhibits some suspicious characteristics.",
+        "reasons": [
+            "Suspicious metadata or uncommon indicators found.",
+            "Unable to fully verify the origin or reputation."
+        ],
+        "possible_threat": "Suspicious Activity / Potential Spam",
+        "recommendations": [
+            "Proceed with caution.",
+            "Verify the sender or source through a secondary channel before continuing.",
+            "Do not provide sensitive personal information."
+        ]
+    }
+}

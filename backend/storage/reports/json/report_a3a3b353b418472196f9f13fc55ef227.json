@@ -1,0 +1,39 @@
+{
+    "report_id": "a3a3b353b418472196f9f13fc55ef227",
+    "timestamp": "2026-07-30T13:34:27.659232",
+    "scan_data": {
+        "input": "backend\\storage\\uploads\\images\\ad5412cb-f5f0-4813-8f51-f2387fcfc913_pexels-photo-20122621.png",
+        "type": "image",
+        "scan_id": "ad5412cb-f5f0-4813-8f51-f2387fcfc913"
+    },
+    "evidence": {
+        "payload_type": "image",
+        "technical_indicators": [
+            {
+                "name": "image_format",
+                "value": "AVIF",
+                "description": "Detected image file format: AVIF.",
+                "severity": "low"
+            }
+        ],
+        "threat_intelligence": [],
+        "heuristic_matches": []
+    },
+    "evaluation": {
+        "risk_score": 0,
+        "risk_level": "Low Risk",
+        "triggered_rules": []
+    },
+    "ai_explanation": {
+        "summary": "Low risk detected. No immediate threats were identified.",
+        "reasons": [
+            "Input appears normal and lacks typical malicious indicators.",
+            "Domain/file is benign based on current checks."
+        ],
+        "possible_threat": "None",
+        "recommendations": [
+            "Standard safety practices apply.",
+            "Always stay vigilant when interacting with external links or files."
+        ]
+    }
+}

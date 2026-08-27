@@ -1,0 +1,39 @@
+{
+    "report_id": "750f727f9eb543e3b435089041eb0c4a",
+    "timestamp": "2026-07-29T19:14:11.969156",
+    "scan_data": {
+        "input": "backend\\storage\\uploads\\images\\d7642b0b-50ec-42ab-b252-f77eaa92125d_ChatGPT Image Jul 28, 2026, 10_44_54 PM.png",
+        "type": "image",
+        "scan_id": "d7642b0b-50ec-42ab-b252-f77eaa92125d"
+    },
+    "evidence": {
+        "payload_type": "image",
+        "technical_indicators": [
+            {
+                "name": "image_format",
+                "value": "PNG",
+                "description": "Detected image file format: PNG.",
+                "severity": "low"
+            }
+        ],
+        "threat_intelligence": [],
+        "heuristic_matches": []
+    },
+    "evaluation": {
+        "risk_score": 0,
+        "risk_level": "Low Risk",
+        "triggered_rules": []
+    },
+    "ai_explanation": {
+        "summary": "Low risk detected. No immediate threats were identified.",
+        "reasons": [
+            "Input appears normal and lacks typical malicious indicators.",
+            "Domain/file is benign based on current checks."
+        ],
+        "possible_threat": "None",
+        "recommendations": [
+            "Standard safety practices apply.",
+            "Always stay vigilant when interacting with external links or files."
+        ]
+    }
+}

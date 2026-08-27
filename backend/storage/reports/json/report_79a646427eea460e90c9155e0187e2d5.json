@@ -1,0 +1,66 @@
+{
+    "report_id": "79a646427eea460e90c9155e0187e2d5",
+    "timestamp": "2026-08-27T10:02:45.455879",
+    "scan_data": {
+        "input": "https://xyz.in",
+        "type": "url",
+        "scan_id": "bc62c140-d7a3-4b26-94dc-e4fcacb90741"
+    },
+    "evidence": {
+        "payload_type": "url",
+        "technical_indicators": [
+            {
+                "name": "ssl_valid",
+                "value": false,
+                "description": "SSL/TLS certificate validity status.",
+                "severity": "high"
+            },
+            {
+                "name": "domain_age_days",
+                "value": 7861,
+                "description": "Age of the registered domain: 7861 day(s).",
+                "severity": "low"
+            },
+            {
+                "name": "registrar",
+                "value": "Name.com, Inc.",
+                "description": "Domain registrar: Name.com, Inc..",
+                "severity": "low"
+            }
+        ],
+        "threat_intelligence": [
+            {
+                "name": "virustotal_positives",
+                "value": 0,
+                "description": "VirusTotal engine detections: 0.",
+                "severity": "low"
+            },
+            {
+                "name": "gsb_unsafe",
+                "value": false,
+                "description": "Not flagged by Google Safe Browsing.",
+                "severity": "low"
+            }
+        ],
+        "heuristic_matches": []
+    },
+    "evaluation": {
+        "risk_score": 20,
+        "risk_level": "Low Risk",
+        "triggered_rules": [
+            "Technical: Invalid SSL/TLS certificate (+20)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "Low risk detected. No immediate threats were identified.",
+        "reasons": [
+            "Input appears normal and lacks typical malicious indicators.",
+            "Domain/file is benign based on current checks."
+        ],
+        "possible_threat": "None",
+        "recommendations": [
+            "Standard safety practices apply.",
+            "Always stay vigilant when interacting with external links or files."
+        ]
+    }
+}

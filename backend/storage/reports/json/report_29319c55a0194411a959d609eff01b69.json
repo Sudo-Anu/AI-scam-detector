@@ -1,0 +1,51 @@
+{
+    "report_id": "29319c55a0194411a959d609eff01b69",
+    "timestamp": "2026-08-25T14:16:06.205830",
+    "scan_data": {
+        "input": "Message: FINAL NOTICE: Your package delivery has been suspended due to an unpaid shipping fee of $1.50. Click here immediately to update your details or face return to sender: http://usps-track-update-982.com",
+        "type": "text",
+        "scan_id": "f05fecf0-7c40-47b1-84c0-0dfecdcb2516"
+    },
+    "evidence": {
+        "payload_type": "text",
+        "technical_indicators": [
+            {
+                "name": "spam_keyword_count",
+                "value": 1,
+                "description": "1 suspicious keyword(s) detected in text.",
+                "severity": "low"
+            }
+        ],
+        "threat_intelligence": [],
+        "heuristic_matches": [
+            {
+                "name": "payment_triggers",
+                "value": [
+                    "suspended"
+                ],
+                "description": "Financial scam keywords detected (1 match(es)). Indicative of financial fraud or advance-fee scams.",
+                "severity": "medium"
+            }
+        ]
+    },
+    "evaluation": {
+        "risk_score": 25,
+        "risk_level": "Low Risk",
+        "triggered_rules": [
+            "Heuristic: Payment/financial keywords detected (+15)",
+            "Heuristic: 1 spam keyword(s) in text (+10)"
+        ]
+    },
+    "ai_explanation": {
+        "summary": "Low risk detected. No immediate threats were identified.",
+        "reasons": [
+            "Input appears normal and lacks typical malicious indicators.",
+            "Domain/file is benign based on current checks."
+        ],
+        "possible_threat": "None",
+        "recommendations": [
+            "Standard safety practices apply.",
+            "Always stay vigilant when interacting with external links or files."
+        ]
+    }
+}

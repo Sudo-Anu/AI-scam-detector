@@ -1,0 +1,32 @@
+{
+    "report_id": "a566598ae8a34a719830eeec4a804607",
+    "timestamp": "2026-07-29T19:01:13.535583",
+    "scan_data": {
+        "input": "Congratulations! You won 1 million dollars. Send your bank details now!",
+        "type": "text",
+        "scan_id": "3c5b38d0-3da7-4c65-b2fd-5551a7754d31"
+    },
+    "evidence": {
+        "payload_type": "text",
+        "technical_indicators": [],
+        "threat_intelligence": [],
+        "heuristic_matches": []
+    },
+    "evaluation": {
+        "risk_score": 0,
+        "risk_level": "Low Risk",
+        "triggered_rules": []
+    },
+    "ai_explanation": {
+        "summary": "Low risk detected. No immediate threats were identified.",
+        "reasons": [
+            "Input appears normal and lacks typical malicious indicators.",
+            "Domain/file is benign based on current checks."
+        ],
+        "possible_threat": "None",
+        "recommendations": [
+            "Standard safety practices apply.",
+            "Always stay vigilant when interacting with external links or files."
+        ]
+    }
+}
