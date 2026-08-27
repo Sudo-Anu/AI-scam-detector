@@ -28,62 +28,78 @@
 
 /* Guardian AI Custom Classes */
 .glass-panel {
-    background: rgba(25, 27, 40, 0.4);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02), 0 8px 32px rgba(0, 0, 0, 0.4);
+  background: rgba(25, 27, 40, 0.4);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02), 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .subtle-border-gradient {
-    position: relative;
+  position: relative;
 }
+
 .subtle-border-gradient::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, rgba(255, 171, 243, 0.3) 0%, rgba(138, 99, 245, 0.1) 50%, rgba(255, 255, 255, 0.02) 100%);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255, 171, 243, 0.3) 0%, rgba(138, 99, 245, 0.1) 50%, rgba(255, 255, 255, 0.02) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .ambient-glow {
-    position: absolute;
-    width: 800px;
-    height: 800px;
-    background: radial-gradient(circle, rgba(138, 99, 245, 0.08) 0%, rgba(0,0,0,0) 70%);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(138, 99, 245, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
 }
 
 .scan-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 171, 243, 0.8), transparent);
-    box-shadow: 0 0 15px rgba(255, 171, 243, 0.5);
-    opacity: 0;
-    animation: scan-soft 4s ease-in-out infinite;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 171, 243, 0.8), transparent);
+  box-shadow: 0 0 15px rgba(255, 171, 243, 0.5);
+  opacity: 0;
+  animation: scan-soft 4s ease-in-out infinite;
 }
 
 @keyframes scan-soft {
-    0% { top: 0; opacity: 0; transform: translateY(-10px); }
-    15% { opacity: 1; }
-    85% { opacity: 1; }
-    100% { top: 100%; opacity: 0; transform: translateY(10px); }
+  0% {
+    top: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    top: 100%;
+    opacity: 0;
+    transform: translateY(10px);
+  }
 }
 
 .input-glow:focus-within {
-    box-shadow: 0 0 30px rgba(138, 99, 245, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.02);
-    border-color: rgba(138, 99, 245, 0.4);
+  box-shadow: 0 0 30px rgba(138, 99, 245, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.02);
+  border-color: rgba(138, 99, 245, 0.4);
 }
 
 /* Animation utilities for fallback */
@@ -92,6 +108,7 @@
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -105,11 +122,10 @@
 /* --- LIGHT MODE IMPLEMENTATION --- */
 /* Uses a smart invert & hue-rotate filter to turn the deep dark glassmorphism into a sleek light glassmorphism */
 html.light-theme-filter {
-    filter: invert(1) hue-rotate(180deg);
+  filter: invert(1) hue-rotate(180deg);
 }
 
-/* We must un-invert explicit image media so they don't look like x-rays */
 html.light-theme-filter img,
 html.light-theme-filter video {
-    filter: invert(1) hue-rotate(180deg);
+  filter: invert(1) hue-rotate(180deg);
 }
