@@ -64,8 +64,8 @@ echo !GREEN![OK]!RESET! venv activated.
 echo !YELLOW![4/6]!RESET! Checking Python dependencies...
 if not exist "!VENV!\.installed" (
     echo !YELLOW![INFO]!RESET! Installing dependencies... (This might take a while)
-    python -m pip install --upgrade pip --quiet
-    python -m pip install -r "!REQUIREMENTS!" --quiet
+    python -m pip install --upgrade pip --quiet --no-warn-script-location
+    python -m pip install -r "!REQUIREMENTS!" --quiet --no-warn-script-location
     if errorlevel 1 (
         echo !RED![ERROR]!RESET! pip install failed. Check network / requirements.txt.
         pause & exit /b 1
