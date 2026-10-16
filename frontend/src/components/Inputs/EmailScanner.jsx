@@ -6,7 +6,7 @@ const EmailScanner = ({ onSubmit, isLoading = false }) => {
     const [error, setError] = useState('');
     const fileInputRef = useRef(null);
 
-    const allowedExtensions = ['.eml', '.msg', '.txt'];
+    const allowedExtensions = ['.eml'];
 
     const validateFile = (file) => {
         if (!file) {
@@ -15,7 +15,7 @@ const EmailScanner = ({ onSubmit, isLoading = false }) => {
         const fileName = file.name.toLowerCase();
         const isValidExtension = allowedExtensions.some(ext => fileName.endsWith(ext));
         if (!isValidExtension) {
-            return `Invalid file type. Please upload an email file (${allowedExtensions.join(', ')}).`;
+            return `Invalid file type. Please upload an .eml email file exported from your email client.`;
         }
         if (file.size > 10 * 1024 * 1024) {
             return 'File size exceeds the 10MB limit.';
@@ -80,7 +80,7 @@ const EmailScanner = ({ onSubmit, isLoading = false }) => {
         const formData = new FormData();
         formData.append('file', selectedFile);
 
-        onSubmit(formData, selectedFile);
+        onSubmit(formData);
     };
 
     const removeFile = () => {
@@ -104,7 +104,7 @@ const EmailScanner = ({ onSubmit, isLoading = false }) => {
         <div className="lg:col-span-12 flex flex-col pt-8 w-full">
             <h2 className="font-headline-xl text-[40px] md:text-headline-xl text-white/95 mb-4 tracking-tighter">Email Scanner</h2>
             <p className="text-white/50 font-body-md text-lg max-w-2xl font-light mb-8">
-                Upload a suspicious email file (.eml, .msg, or .txt) to inspect headers, hidden attachments, and AI-generated social engineering cues.
+                Upload a suspicious email (.eml) to inspect headers, sender authentication (SPF/DKIM), embedded links, and AI-generated social engineering cues.
             </p>
             
             <div className="flex justify-center w-full">
@@ -140,7 +140,7 @@ const EmailScanner = ({ onSubmit, isLoading = false }) => {
                                     <input
                                         ref={fileInputRef}
                                         type="file"
-                                        accept=".eml,.msg,.txt"
+                                        accept=".eml"
                                         onChange={handleFileChange}
                                         disabled={isLoading}
                                         className="hidden"
@@ -155,7 +155,7 @@ const EmailScanner = ({ onSubmit, isLoading = false }) => {
                                                     <span className="text-accent-purple underline decoration-accent-purple/40 underline-offset-4">Click to upload</span> or drag and drop
                                                 </p>
                                                 <p className="text-xs text-white/40 mt-2 font-mono-data">
-                                                    .EML, .MSG, .TXT (Max 10MB)
+                                                    .EML files only (Max 10MB) — export from Gmail, Outlook, or Thunderbird
                                                 </p>
                                             </div>
                                         </div>

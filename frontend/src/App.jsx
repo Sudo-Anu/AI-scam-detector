@@ -17,6 +17,49 @@ const SCAN_METHODS = [
     { key: "image", label: "Image Forensic", icon: "image_search", endpoint: "/scan/image" },
 ];
 
+// Pulsing skeleton loader shown while scanning
+const ScanLoadingState = () => (
+    <div className="w-full animate-fadeIn">
+        <div className="glass-panel subtle-border-gradient rounded-3xl p-1 md:p-1.5">
+            <div className="bg-[#13151f]/80 rounded-[22px] p-8 md:p-12 relative overflow-hidden backdrop-blur-3xl flex flex-col items-center text-center space-y-6">
+                {/* Animated scan ring */}
+                <div className="relative w-24 h-24 flex items-center justify-center">
+                    <div className="absolute inset-0 rounded-full border-2 border-accent-purple/20 animate-ping" style={{ animationDuration: '2s' }} />
+                    <div className="absolute inset-2 rounded-full border-2 border-accent-purple/30 animate-ping" style={{ animationDuration: '2s', animationDelay: '0.3s' }} />
+                    <div className="w-16 h-16 rounded-full bg-accent-purple/10 border border-accent-purple/30 flex items-center justify-center">
+                        <span className="material-symbols-outlined text-accent-purple text-[28px]" style={{ fontVariationSettings: '"FILL" 1' }}>radar</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 className="text-xl font-semibold text-white/90 tracking-tight">Scanning in Progress</h3>
+                    <p className="text-sm text-white/50 mt-2 font-light">
+                        Running threat analysis engines. This may take a few seconds…
+                    </p>
+                </div>
+                {/* Shimmer skeleton bars */}
+                <div className="w-full max-w-md space-y-3 pt-2">
+                    {[80, 60, 70].map((w, i) => (
+                        <div key={i} className="h-2 rounded-full bg-white/5 overflow-hidden">
+                            <div
+                                className="h-full rounded-full bg-gradient-to-r from-accent-purple/20 via-accent-purple/40 to-accent-purple/20"
+                                style={{
+                                    width: `${w}%`,
+                                    animation: 'shimmer 2s ease-in-out infinite',
+                                    animationDelay: `${i * 0.2}s`
+                                }}
+                            />
+                        </div>
+                    ))}
+                </div>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/30 border border-accent-purple/15 font-mono text-[11px] text-accent-purple/70 tracking-widest uppercase">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent-purple animate-ping" />
+                    Guardian AI Active
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
 function App() {
     const [activeMethod, setActiveMethod] = useState("url");
     const [isLoading, setIsLoading] = useState(false);
@@ -162,6 +205,14 @@ function App() {
                         );
                     })}
                 </div>
+
+                {/* Bottom: version badge */}
+                <div className="px-6 mt-6">
+                    <div className="px-4 py-3 rounded-2xl bg-black/20 border border-white/[0.04] text-center">
+                        <p className="text-[10px] uppercase tracking-widest text-white/30 font-semibold">Guardian AI v2.4</p>
+                        <p className="text-[11px] text-white/20 mt-0.5 font-light">Powered by Gemini</p>
+                    </div>
+                </div>
             </nav>
 
             {/* Main Content Wrapper */}
@@ -176,8 +227,8 @@ function App() {
                             </div>
                             <span className="text-[11px] font-semibold text-white/70 tracking-widest uppercase">Engine Online</span>
                         </div>
-                        <button 
-                            aria-label="Toggle Theme" 
+                        <button
+                            aria-label="Toggle Theme"
                             onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
                             className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container/60 border border-white/5 text-white/50 hover:text-white/90 hover:bg-white/10 transition-all duration-300 backdrop-blur-xl shadow-lg"
                         >
@@ -192,20 +243,35 @@ function App() {
                 <main className="flex-1 mt-24 p-6 md:p-12 lg:p-16 flex flex-col min-h-[calc(100vh-96px)] items-center">
                     <div className="w-full max-w-[1000px] flex flex-col gap-12">
                         {renderActiveScanner()}
-                        
-                        {isLoading && (
-                            <div className="w-full text-center p-6 bg-surface-container-high/50 backdrop-blur-md rounded-2xl border border-white/5 text-white/60 text-sm font-medium animate-pulse">
-                                Analyzing target, please wait...
+
+                        {/* Loading state — rich skeleton instead of plain pulse */}
+                        {isLoading && <ScanLoadingState />}
+
+                        {/* Error state */}
+                        {!isLoading && error && (
+                            <div className="w-full animate-fadeIn">
+                                <div className="glass-panel subtle-border-gradient rounded-3xl p-1 md:p-1.5">
+                                    <div className="bg-error-container/20 rounded-[22px] p-8 flex flex-col sm:flex-row items-start sm:items-center gap-5 backdrop-blur-3xl border border-error/10">
+                                        <div className="w-12 h-12 flex-shrink-0 rounded-2xl bg-error/10 border border-error/20 flex items-center justify-center">
+                                            <span className="material-symbols-outlined text-error text-[24px]" style={{ fontVariationSettings: '"FILL" 1' }}>error</span>
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="text-sm font-semibold text-error/90 mb-1 uppercase tracking-wide">Scan Failed</p>
+                                            <p className="text-sm text-white/60 font-light leading-relaxed">{error}</p>
+                                        </div>
+                                        <button
+                                            onClick={() => setError(null)}
+                                            className="flex-shrink-0 text-white/40 hover:text-white/80 p-2 rounded-lg hover:bg-white/5 transition-colors"
+                                            title="Dismiss"
+                                        >
+                                            <span className="material-symbols-outlined text-[18px]">close</span>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         )}
 
-                        {error && (
-                            <div className="w-full text-center p-6 bg-error-container/30 backdrop-blur-md rounded-2xl border border-error/20 text-error-container font-medium">
-                                <span className="material-symbols-outlined align-middle mr-2">error</span>
-                                {error}
-                            </div>
-                        )}
-
+                        {/* Results (only when not loading and no error) */}
                         {!isLoading && !error && (
                             <ResultsDashboard scanResults={scanResults} onReset={() => setScanResults(null)} />
                         )}

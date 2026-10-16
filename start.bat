@@ -1,17 +1,8 @@
 @echo off
 setlocal EnableDelayedExpansion
-title AI Scam Detector -- Launcher
+title Guardian AI -- Launcher
 
-:: ANSI colour helpers
-for /f %%a in ('echo prompt $E^| cmd /q') do set "ESC=%%a"
-set "GREEN=%ESC%[92m"
-set "YELLOW=%ESC%[93m"
-set "RED=%ESC%[91m"
-set "CYAN=%ESC%[96m"
-set "BOLD=%ESC%[1m"
-set "RESET=%ESC%[0m"
-
-:: Project paths  (strip trailing backslash from %~dp0)
+:: -- Project paths ---------------------------------------------
 set "ROOT=%~dp0"
 if "!ROOT:~-1!"=="\" set "ROOT=!ROOT:~0,-1!"
 set "BACKEND=!ROOT!\backend"
@@ -19,151 +10,175 @@ set "FRONTEND=!ROOT!\frontend"
 set "VENV=!BACKEND!\venv"
 set "REQUIREMENTS=!BACKEND!\requirements.txt"
 set "ENV_FILE=!ROOT!\.env"
-
-set "_BK=%TEMP%\scam_backend.bat"
-set "_FE=%TEMP%\scam_frontend.bat"
+set "_BK=%TEMP%\guardian_backend.bat"
+set "_FE=%TEMP%\guardian_frontend.bat"
 
 echo.
-echo !BOLD!!CYAN!AI Scam Detector Setup and Runner !RESET!
+echo  ============================================
+echo   *** Guardian AI -- Quick Launcher ***
+echo  ============================================
 echo.
 
-:: [1/6] Python
-echo !YELLOW![1/6]!RESET! Checking Python...
-where python >nul 2>&1
+:: -- [1/6] Python ----------------------------------------------
+echo [1/6] Checking Python...
+set "PYVER="
+py -3 --version > "%TEMP%\pyver.tmp" 2>&1
+if not errorlevel 1 (
+    set /p PYVER=<"%TEMP%\pyver.tmp"
+    del "%TEMP%\pyver.tmp" >nul 2>&1
+    goto :PYTHON_OK
+)
+python --version > "%TEMP%\pyver.tmp" 2>&1
 if errorlevel 1 (
-    echo !RED![ERROR]!RESET! Python not found.
+    del "%TEMP%\pyver.tmp" >nul 2>&1
+    echo [ERROR] Python not found. Install Python 3.10+ from https://python.org
     pause & exit /b 1
 )
-for /f "tokens=*" %%v in ('python --version 2^>^&1') do set "PYVER=%%v"
-echo !GREEN![OK]!RESET! !PYVER! detected.
+set /p PYVER=<"%TEMP%\pyver.tmp"
+del "%TEMP%\pyver.tmp" >nul 2>&1
+:PYTHON_OK
+echo [OK] !PYVER! detected.
 
-:: [2/6] Node / npm
-echo !YELLOW![2/6]!RESET! Checking Node.js / npm...
-where npm >nul 2>&1
+:: -- [2/6] Node.js / npm ---------------------------------------
+echo [2/6] Checking Node.js / npm...
+call npm --version > "%TEMP%\npmver.tmp" 2>&1
 if errorlevel 1 (
-    echo !RED![ERROR]!RESET! npm not found in PATH.
+    del "%TEMP%\npmver.tmp" >nul 2>&1
+    echo [ERROR] npm not found. Install Node.js 18+ from https://nodejs.org
     pause & exit /b 1
 )
-for /f "tokens=*" %%v in ('npm --version 2^>^&1')  do set "NPMVER=%%v"
-echo !GREEN![OK]!RESET! npm v!NPMVER! detected.
+set /p NPMVER=<"%TEMP%\npmver.tmp"
+del "%TEMP%\npmver.tmp" >nul 2>&1
+echo [OK] npm v!NPMVER! detected.
 
-:: [3/6] Virtual environment
-echo !YELLOW![3/6]!RESET! Checking Python virtual environment...
+:: -- [3/6] Virtual environment ---------------------------------
+echo [3/6] Checking Python virtual environment...
 if not exist "!VENV!\Scripts\activate.bat" (
-    echo !YELLOW![INFO]!RESET! venv missing -- creating at backend\venv...
+    echo [INFO] Creating venv at backend\venv ...
     python -m venv "!VENV!"
     if errorlevel 1 (
-        echo !RED![ERROR]!RESET! Failed to create venv.
+        echo [ERROR] Failed to create virtual environment.
         pause & exit /b 1
     )
 )
 call "!VENV!\Scripts\activate.bat"
-echo !GREEN![OK]!RESET! venv activated.
+echo [OK] venv activated.
 
-:: [4/6] Python dependencies
-echo !YELLOW![4/6]!RESET! Checking Python dependencies...
+:: -- [4/6] Python dependencies ---------------------------------
+echo [4/6] Checking Python dependencies...
 if not exist "!VENV!\.installed" (
-    echo !YELLOW![INFO]!RESET! Installing dependencies... (This might take a while)
+    echo [INFO] Installing packages - first run, may take a while...
     python -m pip install --upgrade pip --quiet --no-warn-script-location
     python -m pip install -r "!REQUIREMENTS!" --quiet --no-warn-script-location
     if errorlevel 1 (
-        echo !RED![ERROR]!RESET! pip install failed. Check network / requirements.txt.
+        echo [ERROR] pip install failed. Check your network or requirements.txt.
         pause & exit /b 1
     )
     echo 1 > "!VENV!\.installed"
-    echo !GREEN![OK]!RESET! Dependencies installed successfully.
+    echo [OK] Python packages installed.
 ) else (
-    echo !GREEN![OK]!RESET! Dependencies already installed.
+    echo [OK] Python packages already installed.
 )
 
-:: [5/6] npm dependencies
-echo !YELLOW![5/6]!RESET! Checking frontend npm dependencies...
+:: -- [5/6] npm dependencies ------------------------------------
+echo [5/6] Checking frontend npm packages...
 if not exist "!FRONTEND!\node_modules" (
-    echo !YELLOW![INFO]!RESET! node_modules missing -- running npm install...
+    echo [INFO] Running npm install...
     pushd "!FRONTEND!"
-    npm install --silent
+    call npm install
     if errorlevel 1 (
-        echo !RED![ERROR]!RESET! npm install failed.
+        echo [ERROR] npm install failed.
         popd & pause & exit /b 1
     )
     popd
-    echo !GREEN![OK]!RESET! npm packages installed.
+    echo [OK] npm packages installed.
 ) else (
-    echo !GREEN![OK]!RESET! node_modules already present.
+    echo [OK] node_modules already present.
 )
 
-:: [6/6] API keys
-echo !YELLOW![6/6]!RESET! Verifying API keys in .env...
+:: -- [6/6] Load .env + check keys ------------------------------
+echo [6/6] Loading .env environment variables...
 if not exist "!ENV_FILE!" (
-    echo # AI Scam Detector>"!ENV_FILE!"
+    echo # Guardian AI environment variables > "!ENV_FILE!"
+)
+for /f "usebackq eol=# tokens=1,* delims==" %%A in ("!ENV_FILE!") do (
+    set "_K=%%A"
+    set "_V=%%B"
+    if defined _K if defined _V (
+        set "!_K!=!_V!"
+    )
 )
 call :CHECK_KEY "GEMINI_API_KEY"     "Gemini API Key"
 call :CHECK_KEY "VIRUSTOTAL_API_KEY" "VirusTotal API Key"
-call :CHECK_KEY "GOOGLE_API_KEY"     "Google API Key"
-echo !GREEN![OK]!RESET! API keys checked.
+call :CHECK_KEY "GOOGLE_API_KEY"     "Google Safe Browsing Key"
+echo [OK] Environment loaded.
 
-:: Write helper scripts
+:: -- Write backend launcher ------------------------------------
 (
     echo @echo off
-    echo title ScamDetector-Backend
+    echo title Guardian-AI Backend
     echo cd /d "!ROOT!"
     echo call "!VENV!\Scripts\activate.bat"
+    echo set "GEMINI_API_KEY=!GEMINI_API_KEY!"
+    echo set "VIRUSTOTAL_API_KEY=!VIRUSTOTAL_API_KEY!"
+    echo set "GOOGLE_API_KEY=!GOOGLE_API_KEY!"
     echo echo.
-    echo echo  Backend: http://127.0.0.1:8000
+    echo echo  Backend  : http://127.0.0.1:8000
+    echo echo  API Docs : http://127.0.0.1:8000/docs
     echo echo.
     echo python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
 ) > "!_BK!"
 
+:: -- Write frontend launcher -----------------------------------
 (
     echo @echo off
-    echo title ScamDetector-Frontend
+    echo title Guardian-AI Frontend
     echo cd /d "!FRONTEND!"
     echo echo.
-    echo echo  Frontend: http://localhost:5173
+    echo echo  Frontend : http://localhost:5173
     echo echo.
-    echo npm run dev
+    echo call npm run dev
 ) > "!_FE!"
 
-:: Launch servers
+:: -- Launch both servers ---------------------------------------
 echo.
-echo !BOLD!!CYAN!Launching servers...!RESET!
+echo  Launching servers...
 echo.
+start "Guardian-AI Backend"  /MIN cmd /k "!_BK!"
+start "Guardian-AI Frontend" /MIN cmd /k "!_FE!"
 
-start "ScamDetector-Backend"  /MIN cmd /k "%_BK%"
-start "ScamDetector-Frontend" /MIN cmd /k "%_FE%"
-
-:: Open browser immediately, wait briefly so servers can bind ports
-timeout /t 2 /nobreak >nul
+echo [INFO] Waiting 4s for servers to initialize...
+ping 127.0.0.1 -n 5 >nul
 start "" "http://localhost:5173"
 
-echo !BOLD!Both servers are running in minimised windows.!RESET!
-echo Close "ScamDetector-Backend" and "ScamDetector-Frontend" to stop.
+echo.
+echo  ==============================================================
+echo   Guardian AI is running!
+echo.
+echo   Frontend  : http://localhost:5173
+echo   Backend   : http://127.0.0.1:8000
+echo   API Docs  : http://127.0.0.1:8000/docs
+echo  ==============================================================
+echo.
+echo  Servers are running in background windows.
+echo  Close those command windows to stop the servers.
 echo.
 pause
 exit /b 0
 
-:: ============================================================
-:: SUBROUTINE :CHECK_KEY
-:: ============================================================
 :CHECK_KEY
-set "_KEY=%~1"
-set "_LABEL=%~2"
-set "_VALUE="
-for /f "usebackq tokens=1,* delims==" %%A in ("!ENV_FILE!") do (
-    if /i "%%A"=="!_KEY!" set "_VALUE=%%B"
+if defined %~1 (
+    echo [OK]  %~1 is configured.
+    goto :EOF
 )
-if defined _VALUE set "_VALUE=!_VALUE: =!"
-if not defined _VALUE (
-    echo.
-    echo !YELLOW!  [MISSING]!RESET! !_LABEL! ^(!_KEY!^) is not set.
-    set /p "_NEW=  Enter !_LABEL!: "
-    if "!_NEW!"=="" (
-        echo !RED!  [WARN] Skipped -- some features may not work.!RESET!
-        goto :EOF
-    )
-    echo !_KEY!=!_NEW!>>"!ENV_FILE!"
-    echo !GREEN!  [SAVED]!RESET! !_KEY! appended to .env.
-) else (
-    echo !GREEN!  [OK]!RESET!  !_KEY! is set.
+echo.
+echo [MISSING] %~2 [%~1] not found in .env
+set /p "_NEW=  Enter %~2 - press Enter to skip: "
+if "!_NEW!"=="" (
+    echo [WARN] Skipped -- features using %~1 may not work.
+    goto :EOF
 )
+echo %~1=!_NEW!>> "!ENV_FILE!"
+set "%~1=!_NEW!"
+echo [SAVED] %~1 saved to .env.
 goto :EOF

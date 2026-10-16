@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const ResultsDashboard = ({ scanResults, onReset }) => {
     const [activeEvidenceTab, setActiveEvidenceTab] = useState('all');
     const [isDownloading, setIsDownloading] = useState(false);
+    const [showTriggeredRules, setShowTriggeredRules] = useState(false);
 
     // 1. Fallback UI if no scan results are provided
     if (!scanResults) {
@@ -18,7 +19,7 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
                             <p className="font-body-md text-white/50 max-w-md mb-10 font-light text-[15px] leading-relaxed">
                                 Submit a suspicious payload (URL, Email, Text, or Image) to initiate the Guardian AI threat analysis sequence.
                             </p>
-                            <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-black/40 border border-white/5 font-mono-data text-[11px] text-white/40 tracking-widest uppercase shadow-inner">
+                            <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-black/40 border border-white/5 font-mono text-[11px] text-white/40 tracking-widest uppercase shadow-inner">
                                 <span className="w-2 h-2 rounded-full bg-accent-purple/80 animate-pulse shadow-[0_0_8px_rgba(138,99,245,0.6)]" />
                                 System Standby
                             </div>
@@ -43,6 +44,7 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
                 border: 'border-[#34d399]/20',
                 glow: 'from-[#34d399]/15 to-transparent',
                 stroke: '#34d399',
+                icon: 'verified_user',
                 description: 'No critical threats or malicious indicators detected. Exercise normal safety precautions.'
             };
         } else if (val <= 60) {
@@ -53,6 +55,7 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
                 border: 'border-[#fbbf24]/20',
                 glow: 'from-[#fbbf24]/15 to-transparent',
                 stroke: '#fbbf24',
+                icon: 'warning_amber',
                 description: 'Suspicious patterns or unverified indicators identified. Proceed with caution.'
             };
         } else {
@@ -63,7 +66,8 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
                 border: 'border-error/20',
                 glow: 'from-error/15 to-transparent',
                 stroke: '#ffb4ab',
-                description: 'Confirmed scam, phishing attempt, or malicious payload detected.'
+                icon: 'gpp_bad',
+                description: 'Confirmed scam, phishing attempt, or malicious payload detected. Do not interact.'
             };
         }
     };
@@ -92,31 +96,47 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
 
     // 5. Extract Evidence Data
     const evidence = scanResults.evidence || {};
-    
-    // Map EvidenceItem schema (name, description, severity) to UI expected fields (label, value, status)
+
+    // Map EvidenceItem schema (name, description, severity) to UI expected fields
     const mapEvidence = (items, defaultItems) => {
         if (!Array.isArray(items) || items.length === 0) return defaultItems;
         return items.map(item => ({
             label: item.name,
             status: item.severity ? item.severity.charAt(0).toUpperCase() + item.severity.slice(1) : 'Info',
-            value: item.description
+            value: item.description,
+            rawSeverity: item.severity || 'low'
         }));
     };
 
     const technicalIndicators = mapEvidence(evidence.technical_indicators, [
-        { label: 'Protocol Security', status: score > 50 ? 'Flagged' : 'Secure', value: score > 50 ? 'Anomalous encryption or SSL certificate issues' : 'Valid SSL / TLS 1.3 protocol verified' },
-        { label: 'Payload Inspection', status: score > 60 ? 'Malicious' : 'Clean', value: score > 60 ? 'Obfuscated scripts or suspicious redirects detected' : 'No known exploit signatures identified' }
+        { label: 'Protocol Security', status: score > 50 ? 'High' : 'Low', rawSeverity: score > 50 ? 'high' : 'low', value: score > 50 ? 'Anomalous encryption or SSL certificate issues detected' : 'Valid SSL / TLS 1.3 protocol verified' },
+        { label: 'Payload Inspection', status: score > 60 ? 'High' : 'Low', rawSeverity: score > 60 ? 'high' : 'low', value: score > 60 ? 'Obfuscated scripts or suspicious redirects detected' : 'No known exploit signatures identified' }
     ]);
 
     const threatIntelligence = mapEvidence(evidence.threat_intelligence, [
-        { label: 'Reputation Feeds', status: score > 60 ? 'Blacklisted' : 'Unlisted', value: score > 60 ? 'Matched global phishing and fraud blacklists' : 'Clean across 68 security vendors' },
-        { label: 'Domain Telemetry', status: score > 40 ? 'Suspicious' : 'Trusted', value: score > 40 ? 'Recently registered or anonymous WHOIS records' : 'Established reputation history' }
+        { label: 'Reputation Feeds', status: score > 60 ? 'High' : 'Low', rawSeverity: score > 60 ? 'high' : 'low', value: score > 60 ? 'Matched global phishing and fraud blacklists' : 'Clean across 68 security vendors' },
+        { label: 'Domain Telemetry', status: score > 40 ? 'Medium' : 'Low', rawSeverity: score > 40 ? 'medium' : 'low', value: score > 40 ? 'Recently registered or anonymous WHOIS records' : 'Established reputation history' }
     ]);
 
     const heuristicMatches = mapEvidence(evidence.heuristic_matches, [
-        { label: 'Social Engineering', status: score > 30 ? 'Detected' : 'None', value: score > 30 ? 'Urgency, fear, or financial coercion cues present' : 'Standard conversational tone' },
-        { label: 'Visual & Brand Spoofing', status: score > 70 ? 'High Confidence' : 'None', value: score > 70 ? 'Mimics known financial or login portals' : 'No brand impersonation detected' }
+        { label: 'Social Engineering', status: score > 30 ? 'Medium' : 'Low', rawSeverity: score > 30 ? 'medium' : 'low', value: score > 30 ? 'Urgency, fear, or financial coercion cues present' : 'Standard conversational tone' },
+        { label: 'Visual & Brand Spoofing', status: score > 70 ? 'High' : 'Low', rawSeverity: score > 70 ? 'high' : 'low', value: score > 70 ? 'Mimics known financial or login portals' : 'No brand impersonation detected' }
     ]);
+
+    // 5b. Triggered rules from evaluation
+    const triggeredRules = scanResults.evaluation?.triggered_rules || [];
+
+    // Helper to get severity badge styles
+    const getSeverityStyle = (rawSeverity) => {
+        switch (rawSeverity?.toLowerCase()) {
+            case 'high':
+                return 'bg-error/10 text-error border border-error/20';
+            case 'medium':
+                return 'bg-[#fbbf24]/10 text-[#fbbf24] border border-[#fbbf24]/20';
+            default:
+                return 'bg-[#34d399]/10 text-[#34d399] border border-[#34d399]/20';
+        }
+    };
 
     // 6. Download Report Handler (JSON Export)
     const handleDownloadReport = () => {
@@ -131,7 +151,8 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
                 evaluation: {
                     riskScore: score,
                     riskLevel: risk.level,
-                    threatType: possibleThreat
+                    threatType: possibleThreat,
+                    triggeredRules
                 },
                 aiExplanation: {
                     summary: renderSafeText(summary),
@@ -164,9 +185,9 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
             {/* Top Bar: Title & Quick Actions */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-white/[0.05]">
                 <div>
-                    <div className="flex items-center gap-2 font-mono-data text-[11px] uppercase tracking-widest text-accent-purple mb-3">
+                    <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-accent-purple mb-3">
                         <span className="inline-block w-2 h-2 rounded-full bg-accent-purple animate-ping shadow-[0_0_8px_rgba(138,99,245,0.6)]" />
-                        <span>Analysis Complete • ID: {scanResults.scan_id || 'SYS-99482A'}</span>
+                        <span>Analysis Complete • ID: {scanResults.scan_id ? scanResults.scan_id.toUpperCase().slice(0, 13) : 'SYS-99482A'}</span>
                     </div>
                     <h2 className="font-headline-xl text-[32px] md:text-[40px] tracking-tighter text-white/95">
                         Threat Intelligence Report
@@ -178,8 +199,9 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
                         <button
                             type="button"
                             onClick={onReset}
-                            className="px-5 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:text-white/90 bg-black/20 hover:bg-black/40 border border-white/5 transition-all"
+                            className="px-5 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:text-white/90 bg-black/20 hover:bg-black/40 border border-white/5 transition-all flex items-center gap-2"
                         >
+                            <span className="material-symbols-outlined text-[16px]">refresh</span>
                             New Scan
                         </button>
                     )}
@@ -217,21 +239,22 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
 
                         <div className="w-full flex items-center justify-between mb-8 relative z-10">
                             <span className="font-label-caps text-[11px] text-white/50">Threat Meter</span>
-                            <span className={`px-3 py-1 rounded-full font-label-caps text-[10px] border ${risk.bg} ${risk.border} ${risk.text}`}>
+                            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-label-caps text-[10px] border ${risk.bg} ${risk.border} ${risk.text}`}>
+                                <span className="material-symbols-outlined text-[12px]" style={{ fontVariationSettings: '"FILL" 1' }}>{risk.icon}</span>
                                 {risk.level}
                             </span>
                         </div>
 
                         {/* Prominent Circular SVG Gauge */}
                         <div className="relative my-4 flex items-center justify-center z-10">
-                            <svg className="w-48 h-48 transform -rotate-90 drop-shadow-2xl">
+                            <svg className="w-48 h-48 transform -rotate-90 drop-shadow-2xl" aria-label={`Risk score: ${score} out of 100`}>
                                 {/* Background Track */}
                                 <circle
                                     cx="96"
                                     cy="96"
                                     r="76"
                                     className="text-white/5"
-                                    strokeWidth="12"
+                                    strokeWidth="10"
                                     stroke="currentColor"
                                     fill="transparent"
                                 />
@@ -240,39 +263,66 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
                                     cx="96"
                                     cy="96"
                                     r="76"
-                                    strokeWidth="12"
+                                    strokeWidth="10"
                                     strokeDasharray={477.5}
                                     strokeDashoffset={477.5 - (477.5 * score) / 100}
                                     strokeLinecap="round"
                                     stroke={risk.stroke}
                                     fill="transparent"
                                     className="transition-all duration-1000 ease-out"
-                                    style={{ filter: `drop-shadow(0 0 8px ${risk.stroke}40)` }}
+                                    style={{ filter: `drop-shadow(0 0 8px ${risk.stroke}60)` }}
                                 />
                             </svg>
                             <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                <span className="font-headline-xl text-[48px] tracking-tighter text-white/95">
+                                <span className="font-headline-xl text-[52px] tracking-tighter text-white/95">
                                     {score}
                                 </span>
-                                <span className="font-mono-data text-[10px] text-white/30 uppercase mt-1">out of 100</span>
+                                <span className="font-mono text-[10px] text-white/30 uppercase mt-1">out of 100</span>
                             </div>
                         </div>
 
-                        <div className="text-center mt-6 w-full relative z-10">
-                            <div className="font-body-md text-white/90 font-medium mb-2">
-                                {possibleThreat}
+                        <div className="text-center mt-6 w-full relative z-10 space-y-2">
+                            <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full ${risk.bg} ${risk.border} border`}>
+                                <span className={`font-body-md font-medium text-[14px] ${risk.text}`}>
+                                    {possibleThreat}
+                                </span>
                             </div>
-                            <p className="font-body-sm text-[13px] text-white/50 font-light leading-relaxed">
+                            <p className="font-body-sm text-[13px] text-white/50 font-light leading-relaxed mt-2">
                                 {risk.description}
                             </p>
                         </div>
+
+                        {/* Triggered Rules accordion */}
+                        {triggeredRules.length > 0 && (
+                            <div className="w-full mt-6 relative z-10">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowTriggeredRules(v => !v)}
+                                    className="w-full flex items-center justify-between text-[11px] text-white/40 hover:text-white/70 transition-colors px-3 py-2 rounded-lg hover:bg-white/5 font-mono uppercase tracking-widest"
+                                >
+                                    <span>{triggeredRules.length} Rule{triggeredRules.length !== 1 ? 's' : ''} Triggered</span>
+                                    <span className="material-symbols-outlined text-[16px]">
+                                        {showTriggeredRules ? 'expand_less' : 'expand_more'}
+                                    </span>
+                                </button>
+                                {showTriggeredRules && (
+                                    <ul className="mt-2 space-y-1 max-h-40 overflow-y-auto pr-1">
+                                        {triggeredRules.map((rule, idx) => (
+                                            <li key={idx} className="text-[11px] text-white/40 px-3 py-1.5 rounded-lg bg-black/20 font-mono leading-tight">
+                                                {rule}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
 
                 {/* SECTION 2: AI EXPLANATION */}
                 <div className="xl:col-span-8 glass-panel subtle-border-gradient rounded-3xl p-1 md:p-1.5 h-full">
                     <div className="bg-[#13151f]/80 rounded-[22px] p-6 md:p-8 relative overflow-hidden h-full backdrop-blur-3xl flex flex-col space-y-8">
-                        
+
                         {/* Summary Banner */}
                         <div>
                             <div className="flex items-center gap-2 font-label-caps text-[11px] text-accent-purple/80 mb-3">
@@ -296,9 +346,9 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
                                 <ul className="space-y-3">
                                     {reasons.length > 0 ? (
                                         reasons.map((reason, idx) => (
-                                            <li key={idx} className="flex items-start gap-3 bg-black/10 p-3.5 rounded-xl border border-white/[0.03]">
-                                                <span className="material-symbols-outlined text-error/80 text-[18px] mt-0.5">warning</span>
-                                                <span className="font-body-sm text-[13px] text-white/70 font-light">{renderSafeText(reason)}</span>
+                                            <li key={idx} className="flex items-start gap-3 bg-black/10 p-3.5 rounded-xl border border-white/[0.03] hover:border-white/[0.07] transition-colors">
+                                                <span className="material-symbols-outlined text-error/80 text-[18px] mt-0.5 flex-shrink-0" style={{ fontVariationSettings: '"FILL" 1' }}>warning</span>
+                                                <span className="font-body-sm text-[13px] text-white/70 font-light leading-relaxed">{renderSafeText(reason)}</span>
                                             </li>
                                         ))
                                     ) : (
@@ -316,9 +366,9 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
                                 <ul className="space-y-3">
                                     {recommendations.length > 0 ? (
                                         recommendations.map((rec, idx) => (
-                                            <li key={idx} className="flex items-start gap-3 bg-black/10 p-3.5 rounded-xl border border-white/[0.03]">
-                                                <span className="material-symbols-outlined text-[#34d399]/80 text-[18px] mt-0.5">shield_locked</span>
-                                                <span className="font-body-sm text-[13px] text-white/70 font-light">{renderSafeText(rec)}</span>
+                                            <li key={idx} className="flex items-start gap-3 bg-black/10 p-3.5 rounded-xl border border-white/[0.03] hover:border-white/[0.07] transition-colors">
+                                                <span className="material-symbols-outlined text-[#34d399]/80 text-[18px] mt-0.5 flex-shrink-0" style={{ fontVariationSettings: '"FILL" 1' }}>shield</span>
+                                                <span className="font-body-sm text-[13px] text-white/70 font-light leading-relaxed">{renderSafeText(rec)}</span>
                                             </li>
                                         ))
                                     ) : (
@@ -379,18 +429,7 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
                                 </h4>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {technicalIndicators.map((item, idx) => (
-                                        <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-black/20 rounded-xl border border-white/[0.03] hover:border-white/10 transition-colors group">
-                                            <div className="overflow-hidden pr-2">
-                                                <span className="font-body-sm font-medium text-[14px] text-white/80 block truncate group-hover:text-white/95 transition-colors">{item.label || `Indicator #${idx + 1}`}</span>
-                                                <span className="font-body-sm text-[13px] text-white/40 font-light mt-1 block truncate">{renderSafeText(item.value || item.description || item)}</span>
-                                            </div>
-                                            <span className={`self-start sm:self-auto flex-shrink-0 px-3 py-1.5 rounded-md font-label-caps text-[10px] ${item.status === 'Flagged' || item.status === 'Malicious' || item.status === 'Suspicious'
-                                                ? 'bg-error/10 text-error border border-error/20'
-                                                : 'bg-[#34d399]/10 text-[#34d399] border border-[#34d399]/20'
-                                                }`}>
-                                                {item.status || 'Verified'}
-                                            </span>
-                                        </div>
+                                        <EvidenceCard key={idx} item={item} getSeverityStyle={getSeverityStyle} renderSafeText={renderSafeText} />
                                     ))}
                                 </div>
                             </div>
@@ -405,18 +444,7 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
                                 </h4>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {threatIntelligence.map((item, idx) => (
-                                        <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-black/20 rounded-xl border border-white/[0.03] hover:border-white/10 transition-colors group">
-                                            <div className="overflow-hidden pr-2">
-                                                <span className="font-body-sm font-medium text-[14px] text-white/80 block truncate group-hover:text-white/95 transition-colors">{item.label || `Feed Match #${idx + 1}`}</span>
-                                                <span className="font-body-sm text-[13px] text-white/40 font-light mt-1 block truncate">{renderSafeText(item.value || item.description || item)}</span>
-                                            </div>
-                                            <span className={`self-start sm:self-auto flex-shrink-0 px-3 py-1.5 rounded-md font-label-caps text-[10px] ${item.status === 'Blacklisted' || item.status === 'Suspicious' || item.status === 'Flagged'
-                                                ? 'bg-error/10 text-error border border-error/20'
-                                                : 'bg-accent-blue/10 text-accent-blue border border-accent-blue/20'
-                                                }`}>
-                                                {item.status || 'Clean'}
-                                            </span>
-                                        </div>
+                                        <EvidenceCard key={idx} item={item} getSeverityStyle={getSeverityStyle} renderSafeText={renderSafeText} />
                                     ))}
                                 </div>
                             </div>
@@ -431,18 +459,7 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
                                 </h4>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {heuristicMatches.map((item, idx) => (
-                                        <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-black/20 rounded-xl border border-white/[0.03] hover:border-white/10 transition-colors group">
-                                            <div className="overflow-hidden pr-2">
-                                                <span className="font-body-sm font-medium text-[14px] text-white/80 block truncate group-hover:text-white/95 transition-colors">{item.label || `Heuristic Pattern #${idx + 1}`}</span>
-                                                <span className="font-body-sm text-[13px] text-white/40 font-light mt-1 block truncate">{renderSafeText(item.value || item.description || item)}</span>
-                                            </div>
-                                            <span className={`self-start sm:self-auto flex-shrink-0 px-3 py-1.5 rounded-md font-label-caps text-[10px] ${item.status === 'Detected' || item.status === 'High Confidence'
-                                                ? 'bg-[#fbbf24]/10 text-[#fbbf24] border border-[#fbbf24]/20'
-                                                : 'bg-white/5 text-white/50 border border-white/10'
-                                                }`}>
-                                                {item.status || 'Passed'}
-                                            </span>
-                                        </div>
+                                        <EvidenceCard key={idx} item={item} getSeverityStyle={getSeverityStyle} renderSafeText={renderSafeText} />
                                     ))}
                                 </div>
                             </div>
@@ -453,5 +470,23 @@ const ResultsDashboard = ({ scanResults, onReset }) => {
         </div>
     );
 };
+
+// Extracted EvidenceCard component — removes truncation so full descriptions are visible
+const EvidenceCard = ({ item, getSeverityStyle, renderSafeText }) => (
+    <div className="flex flex-col gap-3 p-4 bg-black/20 rounded-xl border border-white/[0.03] hover:border-white/10 transition-colors group">
+        <div className="flex items-start justify-between gap-3">
+            <span className="font-body-sm font-medium text-[14px] text-white/80 group-hover:text-white/95 transition-colors leading-snug">
+                {item.label || 'Unknown Indicator'}
+            </span>
+            <span className={`flex-shrink-0 px-2.5 py-1 rounded-md font-label-caps text-[10px] capitalize ${getSeverityStyle(item.rawSeverity || item.status)}`}>
+                {item.status || 'Info'}
+            </span>
+        </div>
+        {/* Full description — NOT truncated */}
+        <span className="font-body-sm text-[12px] text-white/40 font-light leading-relaxed">
+            {renderSafeText(item.value || item.description || '')}
+        </span>
+    </div>
+);
 
 export default ResultsDashboard;

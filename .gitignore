@@ -53,3 +53,9 @@ ehthumbs.db
 Thumbs.db
 
 .vscode/
+New UI/
+
+# Scan report artifacts
+backend/storage/reports/json/*.json
+backend/storage/reports/pdf/*.pdf
+!backend/storage/reports/**/.gitkeep

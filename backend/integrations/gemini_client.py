@@ -33,12 +33,12 @@ You are an expert cybersecurity analyst and AI Scam Detector.
 Your task is to analyze the provided threat evidence, risk score, and risk level to generate a structured, human-readable safety analysis report.
 You must strictly return your findings in JSON format matching exactly this structure:
 {
-    "summary": "A brief, user-friendly overview of the findings.",
-    "reasons": ["A specific, technical justification", "Another justification"],
-    "possible_threat": "Specific category of scam or malware (e.g., Phishing, Advance-Fee Scam)",
+    "summary": "A brief, user-friendly 1-2 sentence overview of the scan findings.",
+    "reasons": ["A specific technical justification referencing the evidence", "Another justification"],
+    "possible_threat": "Specific category of scam or malware (e.g., Phishing Attack, Advance-Fee Scam, No Threat Detected)",
     "recommendations": ["Actionable safety step 1", "Actionable safety step 2"]
 }
-Ensure the JSON is valid and contains no additional text or markdown formatting outside of the JSON block.
+Ensure the JSON is valid. Do not add markdown code blocks. Base all reasons strictly on the evidence provided.
 """.strip()
 
 
@@ -180,6 +180,24 @@ Collected Evidence:
 
         cleaned_text = _clean_json_string(raw_text)
         report_data = json.loads(cleaned_text)
+
+        # --- Key remapping for legacy prompt formats ---
+        # If the prompt file returned old-style keys, remap them to schema keys
+        if "analysis_summary" in report_data and "summary" not in report_data:
+            report_data["summary"] = report_data.pop("analysis_summary", "")
+        if "recommended_actions" in report_data and "recommendations" not in report_data:
+            val = report_data.pop("recommended_actions", [])
+            report_data["recommendations"] = [val] if isinstance(val, str) else val
+        # Merge risk_justification + key_indicators into reasons if reasons is missing
+        if "reasons" not in report_data:
+            parts = []
+            if "risk_justification" in report_data:
+                parts.append(str(report_data.pop("risk_justification", "")))
+            if "key_indicators" in report_data:
+                parts.append(str(report_data.pop("key_indicators", "")))
+            report_data["reasons"] = parts if parts else ["No specific reasons provided."]
+        if "possible_threat" not in report_data:
+            report_data["possible_threat"] = "Unknown Threat Type"
 
         # Validate required schema keys
         required_keys = {"summary", "reasons", "possible_threat", "recommendations"}

@@ -9,8 +9,8 @@
 
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -68,11 +68,11 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 171, 243, 0.8), transparent);
-  box-shadow: 0 0 15px rgba(255, 171, 243, 0.5);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(138, 99, 245, 0.8), rgba(255, 171, 243, 0.8), transparent);
+  box-shadow: 0 0 15px rgba(138, 99, 245, 0.5), 0 0 30px rgba(255, 171, 243, 0.3);
   opacity: 0;
-  animation: scan-soft 4s ease-in-out infinite;
+  animation: scan-soft 3.5s ease-in-out infinite;
 }
 
 @keyframes scan-soft {
@@ -82,11 +82,11 @@
     transform: translateY(-10px);
   }
 
-  15% {
+  12% {
     opacity: 1;
   }
 
-  85% {
+  88% {
     opacity: 1;
   }
 
@@ -99,14 +99,14 @@
 
 .input-glow:focus-within {
   box-shadow: 0 0 30px rgba(138, 99, 245, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.02);
-  border-color: rgba(138, 99, 245, 0.4);
+  border-color: rgba(138, 99, 245, 0.4) !important;
 }
 
-/* Animation utilities for fallback */
+/* Animation utilities */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(12px);
   }
 
   to {
@@ -116,7 +116,17 @@
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Shimmer animation for loading skeleton bars */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
 }
 
 /* --- LIGHT MODE IMPLEMENTATION --- */
@@ -128,4 +138,17 @@ html.light-theme-filter {
 html.light-theme-filter img,
 html.light-theme-filter video {
   filter: invert(1) hue-rotate(180deg);
+}
+
+/* Smooth transitions for interactive states */
+button, input, textarea {
+  transition-property: border-color, box-shadow, background-color, color, opacity;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Better text selection */
+::selection {
+  background: rgba(138, 99, 245, 0.3);
+  color: white;
 }
