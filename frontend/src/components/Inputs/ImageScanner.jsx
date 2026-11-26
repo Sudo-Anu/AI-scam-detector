@@ -7,7 +7,18 @@ const ImageScanner = ({ onSubmit, isLoading = false }) => {
     const [error, setError] = useState('');
     const fileInputRef = useRef(null);
 
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/bmp'];
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.bmp', '.jfif'];
+    const allowedTypes = [
+        'image/jpeg',
+        'image/jpg',
+        'image/pjpeg',
+        'image/png',
+        'image/x-png',
+        'image/webp',
+        'image/gif',
+        'image/bmp',
+        'image/x-ms-bmp'
+    ];
 
     useEffect(() => {
         // Cleanup memory for object URLs when component unmounts or file changes
@@ -22,8 +33,13 @@ const ImageScanner = ({ onSubmit, isLoading = false }) => {
         if (!file) {
             return 'Please select or drop a screenshot or image file to scan.';
         }
-        if (!file.type.startsWith('image/') || !allowedTypes.includes(file.type)) {
-            return 'Invalid file type. Please upload a valid image file (JPEG, PNG, WEBP, GIF, or BMP).';
+        const fileName = (file.name || '').toLowerCase();
+        const hasValidExt = allowedExtensions.some(ext => fileName.endsWith(ext));
+        const fileType = (file.type || '').toLowerCase();
+        const hasValidType = allowedTypes.includes(fileType) || fileType.startsWith('image/');
+
+        if (!hasValidExt && !hasValidType) {
+            return 'Invalid file type. Please upload a valid image file (PNG, JPG, JPEG, WEBP, GIF, or BMP).';
         }
         // Limit file size to 15MB for OCR and Vision AI analysis
         if (file.size > 15 * 1024 * 1024) {

@@ -201,10 +201,10 @@ async def scan_email(file: UploadFile = File(...)):
 @router.post("/scan/image", response_model=ScanResponse, tags=["Scanning"])
 async def scan_image(file: UploadFile = File(...)):
     """
-    Accept an image file upload (PNG/JPG/JPEG/WEBP), run OCR scanning,
+    Accept an image file upload (PNG/JPG/JPEG/WEBP/BMP/GIF/JFIF), run OCR scanning,
     and clean up the temporary file afterwards.
     """
-    valid_extensions = (".png", ".jpg", ".jpeg", ".webp")
+    valid_extensions = (".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif", ".jfif")
     if not any(file.filename.lower().endswith(ext) for ext in valid_extensions):
         raise HTTPException(
             status_code=400,

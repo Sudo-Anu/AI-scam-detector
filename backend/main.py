@@ -10,11 +10,26 @@ import os
 import time
 import uvicorn
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import AsyncGenerator
 
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+
+# ---------------------------------------------------------------------------
+# Load environment variables from .env at project root (if present).
+# This ensures API keys (GEMINI_API_KEY, VIRUSTOTAL_API_KEY, GOOGLE_API_KEY)
+# are available regardless of how the server is started (start.bat or direct).
+# ---------------------------------------------------------------------------
+_project_root = Path(__file__).resolve().parent.parent  # AI-Scam detector/
+_env_path = _project_root / ".env"
+if _env_path.is_file():
+    load_dotenv(_env_path, override=False)
+    print(f"[dotenv] Loaded environment from {_env_path}")
+else:
+    print(f"[dotenv] No .env file found at {_env_path} — relying on system env vars.")
 
 from backend.api.endpoints import router
 

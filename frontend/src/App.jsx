@@ -128,12 +128,28 @@ function App() {
                 const data = await response.json();
                 setScanResults(data);
             } catch (err) {
-                const msg =
-                    typeof err?.message === "string"
-                        ? err.message
-                        : typeof err === "string"
-                        ? err
-                        : JSON.stringify(err);
+                let msg;
+
+                // Detect network-level failures (backend unreachable, CORS, DNS, etc.)
+                // The browser throws a TypeError with "Failed to fetch" when it cannot
+                // reach the server at all — this is NOT an internet-connectivity issue
+                // when the user is running a local dev setup.
+                if (
+                    err instanceof TypeError &&
+                    /failed to fetch|networkerror|network request failed/i.test(err.message)
+                ) {
+                    msg =
+                        `Unable to reach the backend server at ${API_BASE_URL}. ` +
+                        `Please make sure the backend is running (python -m uvicorn backend.main:app --port 8000) and try again.`;
+                } else {
+                    msg =
+                        typeof err?.message === "string"
+                            ? err.message
+                            : typeof err === "string"
+                            ? err
+                            : JSON.stringify(err);
+                }
+
                 setError(msg || "An unexpected error occurred while scanning.");
             } finally {
                 setIsLoading(false);

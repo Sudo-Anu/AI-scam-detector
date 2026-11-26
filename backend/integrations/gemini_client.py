@@ -160,62 +160,71 @@ Collected Evidence:
 {json.dumps(evidence, indent=2, default=str)}
 """.strip()
 
-    try:
-        # Initialise client with the new google-genai SDK
-        client = genai.Client(api_key=api_key)
+    candidate_models = [
+        "gemini-3.5-flash-lite",
+        "gemini-3.5-flash",
+        "gemini-flash-latest",
+        "gemini-3.8-flash",
+    ]
 
-        response = client.models.generate_content(
-            model="gemini-1.5-flash",
-            contents=user_prompt,
-            config=genai_types.GenerateContentConfig(
-                system_instruction=system_instruction,
-                response_mime_type="application/json",
-                temperature=0.2,
-            ),
-        )
+    client = genai.Client(api_key=api_key)
 
-        raw_text = response.text
-        if not raw_text:
-            raise ValueError("Empty response received from Gemini.")
-
-        cleaned_text = _clean_json_string(raw_text)
-        report_data = json.loads(cleaned_text)
-
-        # --- Key remapping for legacy prompt formats ---
-        # If the prompt file returned old-style keys, remap them to schema keys
-        if "analysis_summary" in report_data and "summary" not in report_data:
-            report_data["summary"] = report_data.pop("analysis_summary", "")
-        if "recommended_actions" in report_data and "recommendations" not in report_data:
-            val = report_data.pop("recommended_actions", [])
-            report_data["recommendations"] = [val] if isinstance(val, str) else val
-        # Merge risk_justification + key_indicators into reasons if reasons is missing
-        if "reasons" not in report_data:
-            parts = []
-            if "risk_justification" in report_data:
-                parts.append(str(report_data.pop("risk_justification", "")))
-            if "key_indicators" in report_data:
-                parts.append(str(report_data.pop("key_indicators", "")))
-            report_data["reasons"] = parts if parts else ["No specific reasons provided."]
-        if "possible_threat" not in report_data:
-            report_data["possible_threat"] = "Unknown Threat Type"
-
-        # Validate required schema keys
-        required_keys = {"summary", "reasons", "possible_threat", "recommendations"}
-        if not required_keys.issubset(report_data.keys()):
-            logger.warning(
-                "Missing required keys in Gemini response. Keys received: %s",
-                list(report_data.keys()),
+    for model_name in candidate_models:
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=user_prompt,
+                config=genai_types.GenerateContentConfig(
+                    system_instruction=system_instruction,
+                    response_mime_type="application/json",
+                    temperature=0.2,
+                ),
             )
-            return _get_mock_response(risk_level)
 
-        return report_data
+            raw_text = response.text
+            if not raw_text:
+                continue
 
-    except json.JSONDecodeError as e:
-        logger.error("Failed to parse Gemini JSON response: %s", e)
-        return _get_mock_response(risk_level)
-    except Exception as e:
-        logger.error("Gemini API call failed: %s", e)
-        return _get_mock_response(risk_level)
+            cleaned_text = _clean_json_string(raw_text)
+            report_data = json.loads(cleaned_text)
+
+            # --- Key remapping for legacy prompt formats ---
+            if "analysis_summary" in report_data and "summary" not in report_data:
+                report_data["summary"] = report_data.pop("analysis_summary", "")
+            if "recommended_actions" in report_data and "recommendations" not in report_data:
+                val = report_data.pop("recommended_actions", [])
+                report_data["recommendations"] = [val] if isinstance(val, str) else val
+            if "reasons" not in report_data:
+                parts = []
+                if "risk_justification" in report_data:
+                    parts.append(str(report_data.pop("risk_justification", "")))
+                if "key_indicators" in report_data:
+                    parts.append(str(report_data.pop("key_indicators", "")))
+                report_data["reasons"] = parts if parts else ["No specific reasons provided."]
+            if "possible_threat" not in report_data:
+                report_data["possible_threat"] = "Unknown Threat Type"
+
+            # Validate required schema keys
+            required_keys = {"summary", "reasons", "possible_threat", "recommendations"}
+            if not required_keys.issubset(report_data.keys()):
+                logger.warning(
+                    "Missing required keys in Gemini response from %s. Keys received: %s",
+                    model_name,
+                    list(report_data.keys()),
+                )
+                continue
+
+            return report_data
+
+        except json.JSONDecodeError as e:
+            logger.error("Failed to parse Gemini JSON response from %s: %s", model_name, e)
+            continue
+        except Exception as e:
+            logger.warning("Gemini API call to model %s failed: %s", model_name, e)
+            continue
+
+    logger.error("All Gemini candidate models failed. Returning mock evaluation.")
+    return _get_mock_response(risk_level)
 
 
 # Module-level alias so any code calling `explain()` also works

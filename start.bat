@@ -68,8 +68,8 @@ echo [OK] venv activated.
 echo [4/6] Checking Python dependencies...
 if not exist "!VENV!\.installed" (
     echo [INFO] Installing packages - first run, may take a while...
-    python -m pip install --upgrade pip --quiet --no-warn-script-location
-    python -m pip install -r "!REQUIREMENTS!" --quiet --no-warn-script-location
+    "!VENV!\Scripts\python.exe" -m pip install --upgrade pip --quiet --no-warn-script-location
+    "!VENV!\Scripts\python.exe" -m pip install -r "!REQUIREMENTS!" --quiet --no-warn-script-location
     if errorlevel 1 (
         echo [ERROR] pip install failed. Check your network or requirements.txt.
         pause & exit /b 1
@@ -126,7 +126,7 @@ echo [OK] Environment loaded.
     echo echo  Backend  : http://127.0.0.1:8000
     echo echo  API Docs : http://127.0.0.1:8000/docs
     echo echo.
-    echo python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
+    echo "!VENV!\Scripts\python.exe" -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
 ) > "!_BK!"
 
 :: -- Write frontend launcher -----------------------------------

@@ -105,6 +105,36 @@ def get_image_metadata(file_path: str) -> Dict[str, Any]:
     return metadata
 
 
+def _gemini_vision_ocr(file_path: str) -> str:
+    """
+    Fallback OCR using Gemini Vision when EasyOCR finds no text or fails.
+    Provides fast, high-accuracy multilingual text extraction.
+    """
+    api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+    if not api_key:
+        return ""
+    try:
+        from google import genai
+        from PIL import Image as PILImage
+
+        client = genai.Client(api_key=api_key)
+        with PILImage.open(file_path) as img:
+            response = client.models.generate_content(
+                model="gemini-3.5-flash-lite",
+                contents=[
+                    img,
+                    "Transcribe all readable text in this image verbatim. Do not describe the image, just output the exact text. If there is no text in the image, output nothing."
+                ]
+            )
+            raw = (response.text or "").strip().lower()
+            if raw:
+                logger.info(f"Gemini Vision fallback extracted {len(raw)} characters of text from {file_path}")
+            return raw
+    except Exception as e:
+        logger.debug(f"Gemini Vision fallback OCR failed on {file_path}: {e}")
+        return ""
+
+
 def scan_image(file_path: str) -> Dict[str, Any]:
     """
     Main asynchronous/synchronous entry point for the image OCR scanning engine.
@@ -125,6 +155,10 @@ def scan_image(file_path: str) -> Dict[str, Any]:
                 extracted_text = " ".join(result_blocks).lower()
             except Exception as e:
                 logger.error(f"OCR execution crashed on {file_path}: {e}", exc_info=True)
+
+        # 2b. Intelligent Gemini Vision fallback if EasyOCR yielded no text
+        if not extracted_text:
+            extracted_text = _gemini_vision_ocr(file_path)
                 
     # 3. Text & Heuristic Content Analysis Setup
     detected_keywords: Set[str] = set()
